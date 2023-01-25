@@ -20,4 +20,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ProfileMatching\Applicant\" />
+    <Folder Include="ProfileMatching\Application\" />
+    <Folder Include="ProfileMatching\ProfileMatch\" />
+  </ItemGroup>
+
 </Project>

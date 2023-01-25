@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
-using ProfileMatching.Services.Interfaces;
+using ProfileMatching.RecruiterServices.Interfaces;
 
-namespace ProfileMatching.Services
+namespace ProfileMatching.RecruiterServices
 {
     public class JobPositionService:IJobPosition
     {
@@ -45,10 +45,19 @@ namespace ProfileMatching.Services
             }
             return "Pozita e punes nuk u gjend!";
         }
-
-        public async Task<List<JobPosition>> GetJobPositions()
+        
+        public List<JobPosition> GetJobPositions()
         {
-            return await _context.jobPositions.ToListAsync();
+            List<JobPosition> result = new List<JobPosition>();
+            foreach(JobPosition job in _context.jobPositions)
+            {
+                if (job.ExpiryDate.CompareTo(DateTime.Now) == -1)
+                {
+                    continue;
+                }
+                else result.Add(job);
+            }
+            return result;
         }
 
         public async Task<JobPosition> GetJobPositionById(int id)
@@ -56,16 +65,20 @@ namespace ProfileMatching.Services
             return await _context.jobPositions.FirstOrDefaultAsync(JobPosition => JobPosition.Id == id);
         }
 
-        public JsonResult UpdateJobPosition(JobPosition jobPosition)
+        public JsonResult UpdateJobPosition(JobPositionDTO jobPosition)
         {
-            _context.jobPositions.Update(jobPosition);
+            JobPosition job = new JobPosition();
+            job.CompanyId = jobPosition.companyId;
+            job.SkillSet = jobPosition.SkillSet;
+            job.Title=jobPosition.Title;
+            job.Description=jobPosition.Description;
+            job.ExpiryDate = jobPosition.ExpiryDate;
+
+            _context.jobPositions.Update(job);
             _context.SaveChanges();
             return new JsonResult("Pozita e punes u perditsua me sukses!");
         }
 
-        public JsonResult UpdateJobPosition(JobPositionDTO jobPosition)
-        {
-            throw new NotImplementedException();
-        }
+        //Duhet me bo ni metod qe e kqyr a u bo expire ni jobposition, nese u bo expire e arkivon
     }
 }

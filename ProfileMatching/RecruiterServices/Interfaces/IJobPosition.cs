@@ -2,11 +2,11 @@
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
 
-namespace ProfileMatching.Services.Interfaces
+namespace ProfileMatching.RecruiterServices.Interfaces
 {
     public interface IJobPosition
     {
-        Task<List<JobPosition>> GetJobPositions();
+        List<JobPosition> GetJobPositions();
         Task<JobPosition> GetJobPositionById(int id);
         Task<string> AddJobPosition(JobPositionDTO jobPosition);
         Task<string> DeleteJobPosition(int id);

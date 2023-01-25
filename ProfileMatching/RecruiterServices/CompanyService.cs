@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
-using ProfileMatching.Services.Interfaces;
+using ProfileMatching.RecruiterServices.Interfaces;
 using System;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace ProfileMatching.Services
+namespace ProfileMatching.RecruiterServices
 {
     public class CompanyService : ICompany,ICompanyExistence
     {

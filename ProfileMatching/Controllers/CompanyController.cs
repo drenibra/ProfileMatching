@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Models;
-using ProfileMatching.Services;
-using ProfileMatching.Services.Interfaces;
+using ProfileMatching.RecruiterServices;
+using ProfileMatching.RecruiterServices.Interfaces;
 
 namespace ProfileMatching.Controllers
 

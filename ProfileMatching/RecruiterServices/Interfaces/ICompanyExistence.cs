@@ -1,4 +1,4 @@
-﻿namespace ProfileMatching.Services.Interfaces
+﻿namespace ProfileMatching.RecruiterServices.Interfaces
 {
     public interface ICompanyExistence
     {

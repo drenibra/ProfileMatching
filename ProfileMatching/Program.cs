@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
-using ProfileMatching.Services;
-using ProfileMatching.Services.Interfaces;
+using ProfileMatching.RecruiterServices;
+using ProfileMatching.RecruiterServices.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

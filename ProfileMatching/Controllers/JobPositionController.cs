@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
-using ProfileMatching.Services;
-using ProfileMatching.Services.Interfaces;
+using ProfileMatching.RecruiterServices;
+using ProfileMatching.RecruiterServices.Interfaces;
 
 namespace ProfileMatching.Controllers
 {
@@ -17,9 +17,9 @@ namespace ProfileMatching.Controllers
             this.contract = contract;
         }
         [HttpGet]
-        public async Task<IActionResult> GetJobPositions()
+        public IActionResult GetJobPositions()
         {
-            return Ok(await contract.GetJobPositions());
+            return Ok(contract.GetJobPositions());
         }
 
         [HttpGet("{id}")]
