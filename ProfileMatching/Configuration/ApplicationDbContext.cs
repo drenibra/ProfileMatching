@@ -12,5 +12,7 @@ namespace ProfileMatching.Configurations
         public DbSet<Company> companies { get; set; }
         public DbSet<JobPosition> jobPositions { get; set; }
 
+        public DbSet<Models.Applicant> applicants { get; set; }
+
     }
 }
