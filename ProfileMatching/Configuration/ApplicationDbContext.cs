@@ -14,5 +14,7 @@ namespace ProfileMatching.Configurations
 
         public DbSet<Models.Applicant> applicants { get; set; }
 
+        public DbSet<Application> applications { get; set; }
+
     }
 }
