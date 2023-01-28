@@ -11,6 +11,7 @@ namespace ProfileMatching.Models
         public Company Company { get; set; }
         public int? CompanyId { get; set; }
         [ForeignKey("CompanyId")]
+        public DateTime CreatedAt { get; set; }
         public DateTime ExpiryDate { get; set; }
 
         List<Application> Applications { get; set; }

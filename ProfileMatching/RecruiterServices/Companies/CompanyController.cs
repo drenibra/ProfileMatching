@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Models;
-using ProfileMatching.RecruiterServices;
-using ProfileMatching.RecruiterServices.Interfaces;
 
-namespace ProfileMatching.Controllers
+namespace ProfileMatching.RecruiterServices.Companies
 
 {
     [ApiController]
@@ -12,7 +10,8 @@ namespace ProfileMatching.Controllers
     public class CompanyController : Controller
     {
         private ICompany contract;
-        public CompanyController(ICompany contract) { 
+        public CompanyController(ICompany contract)
+        {
             this.contract = contract;
         }
         [HttpGet]
@@ -29,7 +28,7 @@ namespace ProfileMatching.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCompany(Company company)
         {
-            
+
             return Ok(await contract.AddCompany(company));
         }
 
@@ -51,7 +50,7 @@ namespace ProfileMatching.Controllers
         public void UpdateCompany(Company company)
         {
             contract.UpdateCompany(company);
-            
+
         }
     }
 }

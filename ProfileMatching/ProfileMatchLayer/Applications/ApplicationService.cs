@@ -6,7 +6,7 @@ using ProfileMatching.Configurations;
 using ProfileMatching.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ProfileMatching.Applications
+namespace ProfileMatching.ProfileMatchLayer.Applications
 {
     public class ApplicationService : IApplicationService
     {

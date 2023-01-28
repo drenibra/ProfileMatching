@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
-using ProfileMatching.RecruiterServices.Interfaces;
+using ProfileMatching.RecruiterServices.Companies;
 
-namespace ProfileMatching.RecruiterServices
+namespace ProfileMatching.RecruiterServices.JobPositions
 {
-    public class JobPositionService:IJobPosition
+    public class JobPositionService : IJobPosition
     {
         private readonly ApplicationDbContext _context;
         private ICompanyExistence company;
@@ -21,12 +21,17 @@ namespace ProfileMatching.RecruiterServices
         {
             if (company.IsExistence(jobPosition.companyId))
             {
-                JobPosition job = new JobPosition();
-                job.CompanyId = jobPosition.companyId;
-                job.Title = jobPosition.Title;
-                job.Description = jobPosition.Description;
-                job.SkillSet = jobPosition.SkillSet;
-                job.ExpiryDate = jobPosition.ExpiryDate;
+                DateTime today = DateTime.Now;
+
+                JobPosition job = new JobPosition
+                {
+                    CompanyId = jobPosition.companyId,
+                    Title = jobPosition.Title,
+                    Description = jobPosition.Description,
+                    SkillSet = jobPosition.SkillSet,
+                    ExpiryDate = jobPosition.ExpiryDate,
+                    CreatedAt = today
+                };
                 _context.jobPositions.Add(job);
                 await _context.SaveChangesAsync();
                 return "Pozita e punes u shtua!";
@@ -45,11 +50,11 @@ namespace ProfileMatching.RecruiterServices
             }
             return "Pozita e punes nuk u gjend!";
         }
-        
+
         public List<JobPosition> GetJobPositions()
         {
             List<JobPosition> result = new List<JobPosition>();
-            foreach(JobPosition job in _context.jobPositions)
+            foreach (JobPosition job in _context.jobPositions)
             {
                 if (job.ExpiryDate.CompareTo(DateTime.Now) == -1)
                 {
@@ -70,15 +75,13 @@ namespace ProfileMatching.RecruiterServices
             JobPosition job = new JobPosition();
             job.CompanyId = jobPosition.companyId;
             job.SkillSet = jobPosition.SkillSet;
-            job.Title=jobPosition.Title;
-            job.Description=jobPosition.Description;
+            job.Title = jobPosition.Title;
+            job.Description = jobPosition.Description;
             job.ExpiryDate = jobPosition.ExpiryDate;
 
             _context.jobPositions.Update(job);
             _context.SaveChanges();
             return new JsonResult("Pozita e punes u perditsua me sukses!");
         }
-
-        //Duhet me bo ni metod qe e kqyr a u bo expire ni jobposition, nese u bo expire e arkivon
     }
 }

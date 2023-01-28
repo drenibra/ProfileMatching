@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProfileMatching.Models;
 
-namespace ProfileMatching.Applications
+namespace ProfileMatching.ProfileMatchLayer.Applications
 {
     public interface IApplicationService
     {

@@ -2,7 +2,7 @@
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
 
-namespace ProfileMatching.RecruiterServices.Interfaces
+namespace ProfileMatching.RecruiterServices.JobPositions
 {
     public interface IJobPosition
     {

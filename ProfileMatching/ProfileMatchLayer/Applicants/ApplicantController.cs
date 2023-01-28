@@ -5,19 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProfileMatching.Models;
 
-namespace ProfileMatching.Applicant
+namespace ProfileMatching.ProfileMatchLayer.Applicants
 {
+    [ApiController]
     [Route("[controller]")]
     public class ApplicantController : Controller
     {
-        private readonly ILogger<ApplicantController> _logger;
+        //private readonly ILogger<ApplicantController> _logger;
 
         private readonly IApplicantService _contract;
 
-        public ApplicantController(ILogger<ApplicantController> logger, IApplicantService contract)
+        public ApplicantController(/*ILogger<ApplicantController> logger, */IApplicantService contract)
         {
-            _logger = logger;
+           // _logger = logger;
             _contract = contract;
         }
 
@@ -32,6 +34,13 @@ namespace ProfileMatching.Applicant
         {
             return Ok(await _contract.getApplicantById(id));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddApplicant(Applicant applicant)
+        {
+            return Ok(await _contract.AddApplicant(applicant));
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApplicant(int id)

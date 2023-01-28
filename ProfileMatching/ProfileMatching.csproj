@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ProfileMatching\**" />
+    <Content Remove="ProfileMatching\**" />
+    <EmbeddedResource Remove="ProfileMatching\**" />
+    <None Remove="ProfileMatching\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.11">
       <PrivateAssets>all</PrivateAssets>
@@ -21,9 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ProfileMatching\Applicant\" />
-    <Folder Include="ProfileMatching\Application\" />
-    <Folder Include="ProfileMatching\ProfileMatch\" />
+    <Folder Include="ProfileMatchLayer\Results\" />
   </ItemGroup>
 
 </Project>

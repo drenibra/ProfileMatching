@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
+using ProfileMatching.Models;
+using ProfileMatching.ProfileMatchLayer.Documents;
 
-namespace ProfileMatching.Applicant
+namespace ProfileMatching.ProfileMatchLayer.Applicants
 {
     public class ApplicantService : IApplicantService
     {
@@ -12,12 +14,12 @@ namespace ProfileMatching.Applicant
             _context = context;
         }
 
-        public async Task<List<Models.Applicant>> GetApplicants()
+        public async Task<List<Applicant>> GetApplicants()
         {
             return await _context.applicants.ToListAsync();
         }
 
-        public async Task<Models.Applicant> getApplicantById(int id)
+        public async Task<Applicant> getApplicantById(int id)
         {
             return await _context.applicants.FirstOrDefaultAsync(applicant => applicant.Id == id);
         }
@@ -32,6 +34,15 @@ namespace ProfileMatching.Applicant
                 return "Aplikuesi me id=" + id + " u fshi me sukses!";
             }
             return "Nuk ka rezultate per kete aplikues!";
+        }
+
+        public async Task<string> AddApplicant(Applicant applicant)
+        {
+            int id = applicant.Id;
+            _context.applicants.Add(applicant);
+            await _context.SaveChangesAsync();
+
+            return "Aplikanti u shtua me sukses";
         }
     }
 }

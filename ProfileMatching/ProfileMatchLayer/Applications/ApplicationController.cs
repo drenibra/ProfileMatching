@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProfileMatching.Models;
 
-namespace ProfileMatching.Applications
+namespace ProfileMatching.ProfileMatchLayer.Applications
 {
     [Route("[controller]")]
     public class ApplicationController : Controller

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfileMatching.Configurations;
 
@@ -11,9 +12,10 @@ using ProfileMatching.Configurations;
 namespace ProfileMatching.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230127151659_files-added")]
+    partial class filesadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,13 +96,10 @@ namespace ProfileMatching.Migrations
 
             modelBuilder.Entity("ProfileMatching.Models.Document", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ApplicantId")
+                    b.Property<int?>("ApplicantId")
                         .HasColumnType("int");
 
                     b.Property<string>("Discriminator")
@@ -216,9 +215,7 @@ namespace ProfileMatching.Migrations
                 {
                     b.HasOne("ProfileMatching.Models.Applicant", null)
                         .WithMany("Documents")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicantId");
                 });
 
             modelBuilder.Entity("ProfileMatching.Models.JobPosition", b =>

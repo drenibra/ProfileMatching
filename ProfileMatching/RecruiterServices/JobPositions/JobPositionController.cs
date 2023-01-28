@@ -2,10 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
-using ProfileMatching.RecruiterServices;
-using ProfileMatching.RecruiterServices.Interfaces;
 
-namespace ProfileMatching.Controllers
+namespace ProfileMatching.RecruiterServices.JobPositions
 {
     [ApiController]
     [Route("[controller]")]
