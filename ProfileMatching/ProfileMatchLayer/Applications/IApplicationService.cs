@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProfileMatching.Models;
+using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
     public interface IApplicationService
     {
-        Task<Application> apply(Application application);
+        Task<bool> apply(ApplicationDTO application);
 
         Task<List<Application>> getApplications();
 

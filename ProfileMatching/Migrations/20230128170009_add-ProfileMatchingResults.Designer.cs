@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfileMatching.Configurations;
 
@@ -11,9 +12,10 @@ using ProfileMatching.Configurations;
 namespace ProfileMatching.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230128170009_add-ProfileMatchingResults")]
+    partial class addProfileMatchingResults
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,11 +33,9 @@ namespace ProfileMatching.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Skills")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -180,12 +180,17 @@ namespace ProfileMatching.Migrations
                     b.Property<int?>("ApplicationId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("JobPositionId")
+                        .HasColumnType("int");
+
                     b.Property<double>("Result")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationId");
+
+                    b.HasIndex("JobPositionId");
 
                     b.ToTable("ProfileMatchingResults");
                 });
@@ -258,6 +263,12 @@ namespace ProfileMatching.Migrations
                     b.HasOne("ProfileMatching.Models.Application", "application")
                         .WithMany()
                         .HasForeignKey("ApplicationId");
+
+                    b.HasOne("ProfileMatching.Models.JobPosition", "JobPosition")
+                        .WithMany()
+                        .HasForeignKey("JobPositionId");
+
+                    b.Navigation("JobPosition");
 
                     b.Navigation("application");
                 });

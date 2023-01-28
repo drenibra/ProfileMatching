@@ -20,6 +20,7 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
         }
         public async Task<string> SaveDocumentsAsync(List<IFormFile> files, int id)
         {
+            string path = "assests/documents";
             try
             {
                 foreach (IFormFile file in files)
@@ -29,14 +30,16 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
                     string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
                     document.Name = fileName;
                     document.Extension = file.ContentType;
-                    document.SavedPath = "assests / documents";
+                    document.SavedPath = path;
                     document.ApplicantId = id;
                     document.Size = (int)file.Length;
                     document.Update();
 
-                    await fileSaver.FileSaveDocsAsync(file, "assests/documents", fileName);
+                    //ruan te dhenat per file ne databaze
                     context.Documents.Add(document);
                     await context.SaveChangesAsync();
+                    //ruan file ne folderin wwwroot
+                    await fileSaver.FileSaveDocsAsync(file, path, fileName);
                 }
                 return "Done!";
             }catch(Exception ex)

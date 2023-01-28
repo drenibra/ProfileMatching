@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
+using ProfileMatching.Models.DTOs;
 using ProfileMatching.ProfileMatchLayer.Documents;
 
 namespace ProfileMatching.ProfileMatchLayer.Applicants
 {
-    public class ApplicantService : IApplicantService
+    public class ApplicantService : IApplicantService,IGetApplicant
     {
         private readonly ApplicationDbContext _context;
 
@@ -19,9 +20,9 @@ namespace ProfileMatching.ProfileMatchLayer.Applicants
             return await _context.applicants.ToListAsync();
         }
 
-        public async Task<Applicant> getApplicantById(int id)
+        public Applicant getApplicantById(int id)
         {
-            return await _context.applicants.FirstOrDefaultAsync(applicant => applicant.Id == id);
+            return _context.applicants.FirstOrDefault(applicant => applicant.Id == id);
         }
 
         public async Task<string> DeleteApplicant(int id)
@@ -36,10 +37,14 @@ namespace ProfileMatching.ProfileMatchLayer.Applicants
             return "Nuk ka rezultate per kete aplikues!";
         }
 
-        public async Task<string> AddApplicant(Applicant applicant)
+        public async Task<string> AddApplicant(ApplicantDTO applicant)
         {
-            int id = applicant.Id;
-            _context.applicants.Add(applicant);
+            Applicant a = new Applicant()
+            {
+                Name= applicant.Name,
+                Skills= applicant.Skills
+            };
+            _context.applicants.Add(a);
             await _context.SaveChangesAsync();
 
             return "Aplikanti u shtua me sukses";

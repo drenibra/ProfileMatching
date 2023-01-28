@@ -5,21 +5,68 @@ using System.Threading.Tasks;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using ProfileMatching.ProfileMatchLayer.Results;
+using ProfileMatching.ProfileMatchLayer.Results.Helpers;
+using ProfileMatching.ProfileMatchLayer.Applicants;
+using ProfileMatching.RecruiterServices.JobPositions;
+using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
     public class ApplicationService : IApplicationService
     {
         private readonly ApplicationDbContext _context;
+        private readonly ISaveResults results;
+        private readonly IGetApplicant getApplicant;
+        private readonly IGetJobPosition getJobPosition;
         public ApplicationService(ApplicationDbContext context)
         {
             _context = context;
+            results = new ResultService(context);
+            getApplicant = new ApplicantService(context);
+            getJobPosition = new JobPositionService(context);
         }
-        public async Task<Application> apply(Application application)
+        public async Task<bool> apply(ApplicationDTO application)
         {
-            _context.applications.Add(application);
-            await _context.SaveChangesAsync();
-            return application;
+            CalculateMatch calculate = new CalculateMatch();
+            try
+            {
+                Application a = new Application()
+                {
+                    ApplicantId= application.ApplicantId,
+                    date= DateTime.Now,
+                    JobPositionId= application.JobPositionId
+                };
+                Applicant applicant = getApplicant.getApplicantById(application.ApplicantId);
+                JobPosition jobPosition = getJobPosition.GetJobPositionById(application.JobPositionId);
+                a.Applicant = applicant;
+                a.JobPosition = jobPosition;
+
+                _context.applications.Add(a);
+                await _context.SaveChangesAsync();
+
+                string jobRequirements = jobPosition.SkillSet;
+                string applicantSkills = applicant.Skills;
+
+                int result = calculate.CountSimilarities(jobRequirements, applicantSkills);
+                double finalResult = calculate.GetPercentage(result, jobRequirements);
+
+
+                ProfileMatchingResult profileMatchingResult = new ProfileMatchingResult()
+                {
+                    ApplicationId = a.Id,
+                    application= a,
+                    Result = finalResult
+                };
+
+                await results.AddResult(profileMatchingResult);
+                
+                return true;
+            } catch(Exception ex)
+            {
+                return false;
+            }
         }
 
         public async Task<string> deleteApplication(int id)
@@ -38,6 +85,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         {
             return await _context.applications.ToListAsync();
         }
+
 
         public async Task<Application> getApplicationsByJobId(int id)
         {

@@ -16,6 +16,7 @@ namespace ProfileMatching.Configurations
         public DbSet<Document> Documents { get; set; }
         public DbSet<Certificate> Certificates { get; set; }
         public DbSet<Word> WordDocs { get; set; }
+        public DbSet<ProfileMatchingResult> ProfileMatchingResults { get; set; }
 
     }
 }

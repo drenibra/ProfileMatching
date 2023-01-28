@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProfileMatching.Models;
+using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
+    [ApiController]
     [Route("[controller]")]
     public class ApplicationController : Controller
     {
@@ -33,7 +35,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         }
 
         [HttpPost]
-        public async Task<IActionResult> Apply(Application application)
+        public async Task<IActionResult> Apply(ApplicationDTO application)
         {
             return Ok(await _contract.apply(application));
         }

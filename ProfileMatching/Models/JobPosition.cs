@@ -15,5 +15,6 @@ namespace ProfileMatching.Models
         public DateTime ExpiryDate { get; set; }
 
         List<Application> Applications { get; set; }
+        List<ProfileMatchingResult> ProfileMatchingResults { get; set; } 
     }
 }

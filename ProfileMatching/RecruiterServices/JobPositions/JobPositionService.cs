@@ -7,7 +7,7 @@ using ProfileMatching.RecruiterServices.Companies;
 
 namespace ProfileMatching.RecruiterServices.JobPositions
 {
-    public class JobPositionService : IJobPosition
+    public class JobPositionService : IJobPosition,IGetJobPosition
     {
         private readonly ApplicationDbContext _context;
         private ICompanyExistence company;
@@ -65,9 +65,9 @@ namespace ProfileMatching.RecruiterServices.JobPositions
             return result;
         }
 
-        public async Task<JobPosition> GetJobPositionById(int id)
+        public JobPosition GetJobPositionById(int id)
         {
-            return await _context.jobPositions.FirstOrDefaultAsync(JobPosition => JobPosition.Id == id);
+            return _context.jobPositions.FirstOrDefault(JobPosition => JobPosition.Id == id);
         }
 
         public JsonResult UpdateJobPosition(JobPositionDTO jobPosition)
@@ -82,6 +82,11 @@ namespace ProfileMatching.RecruiterServices.JobPositions
             _context.jobPositions.Update(job);
             _context.SaveChanges();
             return new JsonResult("Pozita e punes u perditsua me sukses!");
+        }
+
+        Task<JobPosition> IJobPosition.GetJobPositionById(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
