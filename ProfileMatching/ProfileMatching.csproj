@@ -1,10 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ProfileMatching\**" />
+    <Content Remove="ProfileMatching\**" />
+    <EmbeddedResource Remove="ProfileMatching\**" />
+    <None Remove="ProfileMatching\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.11" />
@@ -21,9 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ProfileMatching\Applicant\" />
-    <Folder Include="ProfileMatching\Application\" />
-    <Folder Include="ProfileMatching\ProfileMatch\" />
+    <Folder Include="wwwroot\" />
+    <Folder Include="ProfileMatchLayer\Results\" />
   </ItemGroup>
 
 </Project>

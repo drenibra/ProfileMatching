@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
-using ProfileMatching.RecruiterServices;
-using ProfileMatching.RecruiterServices.Interfaces;
+using ProfileMatching.ProfileMatchLayer.Applicants;
+using ProfileMatching.ProfileMatchLayer.Applications;
+using ProfileMatching.ProfileMatchLayer.Documents;
+using ProfileMatching.RecruiterServices.Companies;
+using ProfileMatching.RecruiterServices.JobPositions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<ICompany, CompanyService>();
 builder.Services.AddScoped<IJobPosition, JobPositionService>();
+builder.Services.AddScoped<IApplicantService, ApplicantService>();
+builder.Services.AddScoped<IApplicationService, ApplicationService>();
+builder.Services.AddScoped<IDocuments, DocumentService>();
 
 
 var app = builder.Build();

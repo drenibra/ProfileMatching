@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProfileMatching.Models;
 
-namespace ProfileMatching.RecruiterServices.Interfaces
+namespace ProfileMatching.RecruiterServices.Companies
 {
     public interface ICompany
     {
