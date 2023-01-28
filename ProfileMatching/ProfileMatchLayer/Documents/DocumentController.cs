@@ -1,15 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using ProfileMatching.Models;
+using ProfileMatching.ProfileMatchLayer.Documents.Helpers;
 
 namespace ProfileMatching.ProfileMatchLayer.Documents
 {
+    //[EnableCors("appcors")]
     [ApiController]
     [Route("[controller]")]
     public class DocumentController:Controller
     {
+        private IWebHostEnvironment _env;
+        //private FileSaver fileSaver;
         private readonly IDocuments contract;
-        public DocumentController(IDocuments contract) { 
+        public DocumentController(IDocuments contract, IWebHostEnvironment _env) { 
             this.contract = contract;
+            this._env= _env;
+            
         }
 
         [HttpGet]
@@ -24,5 +31,16 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
            await contract.SaveDocumentsAsync(file, id);
             return new JsonResult("Saved!");
         }
+        /*
+        [HttpGet("Files")]
+        public IActionResult GetFiles()
+        {
+            Document document= new Document();
+            var displayImg = Path.Combine(_env.WebRootPath, "assests/documents");
+            DirectoryInfo directoryInfo= new DirectoryInfo(displayImg);
+            FileInfo[] files = directoryInfo.GetFiles();
+
+            return View(files);
+        }*/
     }
 }

@@ -10,6 +10,7 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
             {
                 { "application/pdf", new Certificate() },
                 { "application/png", new Certificate() },
+                { "image/png", new Certificate() },
                 { "application/msword", new Word()},
                 { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", new Word()},
             };
