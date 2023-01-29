@@ -4,7 +4,11 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
 using ProfileMatching.Configurations;
-<<<<<<< HEAD
+using ProfileMatching.Extensions;
+using ProfileMatching.Models;
+using ProfileMatching.RecruiterServices;
+using ProfileMatching.RecruiterServices.Interfaces;
+using ProfileMatching.Services;
 using ProfileMatching.ProfileMatchLayer.Applicants;
 using ProfileMatching.ProfileMatchLayer.Applications;
 using ProfileMatching.ProfileMatchLayer.Documents;
@@ -12,41 +16,7 @@ using ProfileMatching.ProfileMatchLayer.Results;
 using ProfileMatching.RecruiterServices.Companies;
 using ProfileMatching.RecruiterServices.JobPositions;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<ApplicationDbContext>(option =>
-    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddControllersWithViews();
-
-builder.Services.AddScoped<ICompany, CompanyService>();
-builder.Services.AddScoped<IJobPosition, JobPositionService>();
-builder.Services.AddScoped<IApplicantService, ApplicantService>();
-builder.Services.AddScoped<IApplicationService, ApplicationService>();
-builder.Services.AddScoped<IDocuments, DocumentService>();
-builder.Services.AddScoped<IResults, ResultService>();
-
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-=======
-using ProfileMatching.Extensions;
-using ProfileMatching.Models;
-using ProfileMatching.RecruiterServices;
-using ProfileMatching.RecruiterServices.Interfaces;
-using ProfileMatching.Services;
-
 internal class Program
->>>>>>> origin/dren
 {
     private static async Task Main(string[] args)
     {
@@ -67,6 +37,14 @@ internal class Program
         builder.Services.AddDbContext<ApplicationDbContext>(option =>
             option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ICompany, CompanyService>();
+builder.Services.AddScoped<IJobPosition, JobPositionService>();
+builder.Services.AddScoped<IApplicantService, ApplicantService>();
+builder.Services.AddScoped<IApplicationService, ApplicationService>();
+builder.Services.AddScoped<IDocuments, DocumentService>();
+builder.Services.AddScoped<IResults, ResultService>();
         builder.Services.AddControllersWithViews();
         builder.Services.AddIdentityServices(builder.Configuration);
         builder.Services.AddScoped<ICompany, CompanyService>();
