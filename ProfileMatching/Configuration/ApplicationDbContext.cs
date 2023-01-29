@@ -12,7 +12,6 @@ namespace ProfileMatching.Configurations
         }
         public DbSet<Company> companies { get; set; }
         public DbSet<JobPosition> jobPositions { get; set; }
-<<<<<<< HEAD
         public DbSet<Applicant> applicants { get; set; }
         public DbSet<Application> applications { get; set; }
         public DbSet<Document> Documents { get; set; }
@@ -20,8 +19,5 @@ namespace ProfileMatching.Configurations
         public DbSet<Word> WordDocs { get; set; }
         public DbSet<ProfileMatchingResult> ProfileMatchingResults { get; set; }
 
-=======
-        public virtual DbSet<AppUser> AppUsers { get; set; }
->>>>>>> origin/dren
     }
 }
