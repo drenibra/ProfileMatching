@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
+using ProfileMatching.Models.DTOs;
 using System;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -25,11 +26,16 @@ namespace ProfileMatching.RecruiterServices.Companies
             return await _context.companies.FirstOrDefaultAsync(company => company.Id == id);
         }
 
-        public async Task<Company> AddCompany(Company company)
+        public async Task<Company> AddCompany(CompanyDTO company)
         {
-            _context.companies.Add(company);
+            Company c = new Company()
+            {
+                Name= company.Name,
+                Location= company.Location
+            };
+            _context.companies.Add(c);
             await _context.SaveChangesAsync();
-            return company;
+            return c;
         }
 
         public async Task<string> DeleteCompany(int id)
@@ -44,9 +50,14 @@ namespace ProfileMatching.RecruiterServices.Companies
             return "Compania nuk u gjend!";
         }
 
-        public JsonResult UpdateCompany(Company company)
+        public JsonResult UpdateCompany(CompanyDTO company)
         {
-            _context.companies.Update(company);
+            Company c = new Company()
+            {
+                Name = company.Name,
+                Location= company.Location
+            };
+            _context.companies.Update(c);
             _context.SaveChanges();
             return new JsonResult("Compania u perditsua me sukses!");
         }

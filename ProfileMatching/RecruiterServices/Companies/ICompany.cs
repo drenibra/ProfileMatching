@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProfileMatching.Models;
+using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.RecruiterServices.Companies
 {
@@ -7,8 +8,8 @@ namespace ProfileMatching.RecruiterServices.Companies
     {
         Task<List<Company>> GetCompanies();
         Task<Company> GetCompany(int id);
-        Task<Company> AddCompany(Company company);
+        Task<Company> AddCompany(CompanyDTO company);
         Task<string> DeleteCompany(int id);
-        JsonResult UpdateCompany(Company company);
+        JsonResult UpdateCompany(CompanyDTO company);
     }
 }

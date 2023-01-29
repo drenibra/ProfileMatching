@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Models;
+using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.RecruiterServices.Companies
 
@@ -26,7 +27,7 @@ namespace ProfileMatching.RecruiterServices.Companies
             return Ok(await contract.GetCompany(id));
         }
         [HttpPost]
-        public async Task<IActionResult> AddCompany(Company company)
+        public async Task<IActionResult> AddCompany(CompanyDTO company)
         {
 
             return Ok(await contract.AddCompany(company));
@@ -47,7 +48,7 @@ namespace ProfileMatching.RecruiterServices.Companies
         }
 
         [HttpPut]
-        public void UpdateCompany(Company company)
+        public void UpdateCompany(CompanyDTO company)
         {
             contract.UpdateCompany(company);
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProfileMatching.Models;
+using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.ProfileMatchLayer.Applicants
 {
@@ -29,14 +30,14 @@ namespace ProfileMatching.ProfileMatchLayer.Applicants
             return Ok(await _contract.GetApplicants());
         }
 
-        [HttpGet("{id}")]
+        /*[HttpGet("{id}")]
         public async Task<IActionResult> GetApplicantById(int id)
         {
             return Ok(await _contract.getApplicantById(id));
-        }
+        }*/
 
         [HttpPost]
-        public async Task<IActionResult> AddApplicant(Applicant applicant)
+        public async Task<IActionResult> AddApplicant(ApplicantDTO applicant)
         {
             return Ok(await _contract.AddApplicant(applicant));
         }

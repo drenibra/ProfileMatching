@@ -3,6 +3,7 @@ using ProfileMatching.Configurations;
 using ProfileMatching.ProfileMatchLayer.Applicants;
 using ProfileMatching.ProfileMatchLayer.Applications;
 using ProfileMatching.ProfileMatchLayer.Documents;
+using ProfileMatching.ProfileMatchLayer.Results;
 using ProfileMatching.RecruiterServices.Companies;
 using ProfileMatching.RecruiterServices.JobPositions;
 
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IJobPosition, JobPositionService>();
 builder.Services.AddScoped<IApplicantService, ApplicantService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IDocuments, DocumentService>();
+builder.Services.AddScoped<IResults, ResultService>();
 
 
 var app = builder.Build();
