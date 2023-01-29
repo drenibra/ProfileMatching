@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
@@ -19,7 +20,6 @@ namespace ProfileMatching.RecruiterServices.JobPositions
         {
             return Ok(contract.GetJobPositions());
         }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetJobPositionById(int id)
         {
