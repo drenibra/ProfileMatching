@@ -84,9 +84,9 @@ namespace ProfileMatching.RecruiterServices.JobPositions
             return new JsonResult("Pozita e punes u perditsua me sukses!");
         }
 
-        Task<JobPosition> IJobPosition.GetJobPositionById(int id)
+        async Task<JobPosition> IJobPosition.GetJobPositionById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.jobPositions.FirstOrDefaultAsync(JobPosition => JobPosition.Id == id);
         }
     }
 }

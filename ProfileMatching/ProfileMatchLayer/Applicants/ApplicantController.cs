@@ -14,13 +14,13 @@ namespace ProfileMatching.ProfileMatchLayer.Applicants
     [Route("[controller]")]
     public class ApplicantController : Controller
     {
-        //private readonly ILogger<ApplicantController> _logger;
+        private readonly ILogger<ApplicantController> _logger;
 
         private readonly IApplicantService _contract;
 
-        public ApplicantController(/*ILogger<ApplicantController> logger, */IApplicantService contract)
+        public ApplicantController(ILogger<ApplicantController> logger, IApplicantService contract)
         {
-           // _logger = logger;
+            _logger = logger;
             _contract = contract;
         }
 

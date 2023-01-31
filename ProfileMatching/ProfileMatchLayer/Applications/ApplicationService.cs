@@ -29,10 +29,10 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         }
         public async Task<bool> apply(ApplicationDTO application)
         {
-            CalculateMatch calculate = new CalculateMatch();
+            CalculateMatch calculate = new();
             try
             {
-                Application a = new Application()
+                Application a = new()
                 {
                     ApplicantId= application.ApplicantId,
                     date= DateTime.Now,
@@ -53,17 +53,16 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                 double finalResult = calculate.GetPercentage(result, jobRequirements);
 
 
-                ProfileMatchingResult profileMatchingResult = new ProfileMatchingResult()
+                ProfileMatchingResult profileMatchingResult = new()
                 {
                     ApplicationId = a.Id,
-                    application= a,
                     Result = finalResult
                 };
 
                 await results.AddResult(profileMatchingResult);
                 
                 return true;
-            } catch(Exception ex)
+            } catch(Exception)
             {
                 return false;
             }
@@ -83,13 +82,29 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
 
         public async Task<List<Application>> getApplications()
         {
+            var aps = await _context.applications.ToListAsync();
+            foreach(Application a in aps)
+            {
+                a.Applicant = getApplicant.getApplicantById(a.ApplicantId);
+                a.JobPosition = getJobPosition.GetJobPositionById(a.JobPositionId);
+            }
+
             return await _context.applications.ToListAsync();
         }
 
 
         public async Task<Application> getApplicationsByJobId(int id)
         {
-            return await _context.applications.FirstOrDefaultAsync(application => application.JobPosition.Id == id);
+            try
+            {
+                return await _context.applications.FirstOrDefaultAsync(application => application.JobPosition.Id == id);
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Null");
+                return null;
+            }
+            
         }
     }
 }

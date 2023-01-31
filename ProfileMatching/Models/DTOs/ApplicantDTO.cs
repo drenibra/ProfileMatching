@@ -1,8 +1,8 @@
 ﻿namespace ProfileMatching.Models.DTOs
 {
-    public interface ApplicantDTO
+    public class ApplicantDTO
     {
-        public string Name { get; }
-        public string Skills { get; }
+        public string Name { get; set; }
+        public string Skills { get; set; }
     }
 }

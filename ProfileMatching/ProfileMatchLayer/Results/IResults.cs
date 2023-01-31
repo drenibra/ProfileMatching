@@ -5,6 +5,6 @@ namespace ProfileMatching.ProfileMatchLayer.Results
 
     public interface IResults
     {
-        Task<List<ProfileMatchingResult>> GetApplicants();
+        Task<List<ProfileMatchingResult>> GetResults();
     }
 }

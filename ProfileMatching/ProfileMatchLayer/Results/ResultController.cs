@@ -14,7 +14,7 @@ namespace ProfileMatching.ProfileMatchLayer.Results
         [HttpGet]
         public async Task<ActionResult> GetAllResults()
         { 
-            return Ok(await _contract.GetApplicants());
+            return Ok(await _contract.GetResults());
         }
     }
 }

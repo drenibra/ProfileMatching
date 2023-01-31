@@ -9,15 +9,22 @@ namespace ProfileMatching.ProfileMatchLayer.Applicants
     public class ApplicantService : IApplicantService,IGetApplicant
     {
         private readonly ApplicationDbContext _context;
+        private readonly IGetDocumetsByApplicantID documents;
 
         public ApplicantService(ApplicationDbContext context)
         {
             _context = context;
+            documents = new DocumentService(this._context);
         }
 
         public async Task<List<Applicant>> GetApplicants()
         {
-            return await _context.applicants.ToListAsync();
+            var applicants = await _context.applicants.ToListAsync();
+            foreach (Applicant a in applicants)
+            {
+                a.Documents = documents.GetDocumentsByApplicantId(a.Id);
+            }
+            return applicants;
         }
 
         public Applicant getApplicantById(int id)
@@ -39,7 +46,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applicants
 
         public async Task<string> AddApplicant(ApplicantDTO applicant)
         {
-            Applicant a = new Applicant()
+            Applicant a = new()
             {
                 Name= applicant.Name,
                 Skills= applicant.Skills

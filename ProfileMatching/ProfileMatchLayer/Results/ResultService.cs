@@ -22,13 +22,13 @@ namespace ProfileMatching.ProfileMatchLayer.Results
                 _contex.ProfileMatchingResults.Add(Result);
                 await _contex.SaveChangesAsync();
                 return true;
-            }catch(Exception ex)
+            }catch (Exception)
             {
                 return false;
             }
         }
 
-        public async Task<List<ProfileMatchingResult>> GetApplicants()
+        public async Task<List<ProfileMatchingResult>> GetResults()
         {
             return await _contex.ProfileMatchingResults.ToListAsync();            
         }

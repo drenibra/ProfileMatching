@@ -7,7 +7,7 @@ using System.IO;
 
 namespace ProfileMatching.ProfileMatchLayer.Documents
 {
-    public class DocumentService : IDocuments
+    public class DocumentService : IDocuments, IGetDocumetsByApplicantID
     {
         private ApplicationDbContext context;
         private IWebHostEnvironment _env;
@@ -17,6 +17,11 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
             this.context=context;
             this._env = _env;
             fileSaver = new FileSaver(_env);
+        }
+
+        public DocumentService(ApplicationDbContext context)
+        {
+            this.context=context;
         }
         public async Task<string> SaveDocumentsAsync(List<IFormFile> files, int id)
         {
@@ -54,6 +59,17 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
             return await context.Documents.ToListAsync();
         }
 
-        
+        public List<Document> GetDocumentsByApplicantId(int id)
+        {
+            List<Document> documents = new List<Document>();
+            foreach(Document d in context.Documents)
+            {
+                if(d.ApplicantId == id)
+                {
+                    documents.Add(d);
+                }
+            }
+            return documents;
+        }
     }
 }

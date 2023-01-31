@@ -31,7 +31,8 @@ namespace ProfileMatching.RecruiterServices.Companies
             Company c = new Company()
             {
                 Name= company.Name,
-                Location= company.Location
+                Location= company.Location,
+                Logo = company.Logo
             };
             _context.companies.Add(c);
             await _context.SaveChangesAsync();
