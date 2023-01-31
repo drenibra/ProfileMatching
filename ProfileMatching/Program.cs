@@ -19,7 +19,24 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddControllersWithViews();
+/*
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000").AllowCredentials();
+    });
+});*/
+
+builder.Services.AddCors(option =>
+{
+    option.AddDefaultPolicy(options =>
+    {
+        options.AllowAnyOrigin().AllowAnyMethod().WithHeaders("Access-Control-Allow-Origin");
+    });
+});
+
+//builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<ICompany, CompanyService>();
 builder.Services.AddScoped<IJobPosition, JobPositionService>();
@@ -27,7 +44,6 @@ builder.Services.AddScoped<IApplicantService, ApplicantService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IDocuments, DocumentService>();
 builder.Services.AddScoped<IResults, ResultService>();
-
 
 var app = builder.Build();
 
@@ -38,7 +54,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 
