@@ -102,10 +102,12 @@ namespace ProfileMatching.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -142,10 +144,12 @@ namespace ProfileMatching.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -153,6 +157,32 @@ namespace ProfileMatching.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ProfileMatching.Models.Application", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApplicantId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("JobPositionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("JobPositionId");
+
+                    b.ToTable("applications");
                 });
 
             modelBuilder.Entity("ProfileMatching.Models.AppUser", b =>
@@ -163,9 +193,15 @@ namespace ProfileMatching.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateStarted")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -204,6 +240,9 @@ namespace ProfileMatching.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Skills")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -217,6 +256,8 @@ namespace ProfileMatching.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -226,53 +267,6 @@ namespace ProfileMatching.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("ProfileMatching.Models.Applicant", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Skills")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("applicants");
-                });
-
-            modelBuilder.Entity("ProfileMatching.Models.Application", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ApplicantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("JobPositionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("date")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicantId");
-
-                    b.HasIndex("JobPositionId");
-
-                    b.ToTable("applications");
                 });
 
             modelBuilder.Entity("ProfileMatching.Models.Company", b =>
@@ -308,6 +302,9 @@ namespace ProfileMatching.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ApplicantId")
                         .HasColumnType("int");
 
@@ -332,7 +329,7 @@ namespace ProfileMatching.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantId");
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Documents");
 
@@ -346,6 +343,10 @@ namespace ProfileMatching.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
@@ -394,6 +395,32 @@ namespace ProfileMatching.Migrations
                     b.HasIndex("ApplicationId");
 
                     b.ToTable("ProfileMatchingResults");
+                });
+
+            modelBuilder.Entity("ProfileMatching.Models.Certificate", b =>
+                {
+                    b.HasBaseType("ProfileMatching.Models.Document");
+
+                    b.Property<string>("DateIssued")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Certificate");
+                });
+
+            modelBuilder.Entity("ProfileMatching.Models.Word", b =>
+                {
+                    b.HasBaseType("ProfileMatching.Models.Document");
+
+                    b.Property<string>("LastUpdated")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Word");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -447,39 +474,11 @@ namespace ProfileMatching.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProfileMatching.Models.Certificate", b =>
-                {
-                    b.HasBaseType("ProfileMatching.Models.Document");
-
-                    b.Property<string>("DateIssued")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("Certificate");
-                });
-
-            modelBuilder.Entity("ProfileMatching.Models.Word", b =>
-                {
-                    b.HasBaseType("ProfileMatching.Models.Document");
-
-                    b.Property<string>("LastUpdated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("Word");
-                });
-
             modelBuilder.Entity("ProfileMatching.Models.Application", b =>
                 {
-                    b.HasOne("ProfileMatching.Models.Applicant", "Applicant")
+                    b.HasOne("ProfileMatching.Models.AppUser", "Applicant")
                         .WithMany()
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicantId");
 
                     b.HasOne("ProfileMatching.Models.JobPosition", "JobPosition")
                         .WithMany()
@@ -492,13 +491,20 @@ namespace ProfileMatching.Migrations
                     b.Navigation("JobPosition");
                 });
 
+            modelBuilder.Entity("ProfileMatching.Models.AppUser", b =>
+                {
+                    b.HasOne("ProfileMatching.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
+
+                    b.Navigation("Company");
+                });
+
             modelBuilder.Entity("ProfileMatching.Models.Document", b =>
                 {
-                    b.HasOne("ProfileMatching.Models.Applicant", null)
+                    b.HasOne("ProfileMatching.Models.AppUser", null)
                         .WithMany("Documents")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("ProfileMatching.Models.JobPosition", b =>
@@ -519,7 +525,7 @@ namespace ProfileMatching.Migrations
                     b.Navigation("application");
                 });
 
-            modelBuilder.Entity("ProfileMatching.Models.Applicant", b =>
+            modelBuilder.Entity("ProfileMatching.Models.AppUser", b =>
                 {
                     b.Navigation("Documents");
                 });

@@ -12,9 +12,6 @@ namespace ProfileMatching.Models
         public int JobPositionId { get; set; }
         public JobPosition JobPosition { get; set; }
 
-        public Applicant Applicant { get; set; }
-
-        [ForeignKey("ApplicantId")]
-        public int ApplicantId { get; set; }
+        public virtual AppUser Applicant { get; set; }
     }
 }

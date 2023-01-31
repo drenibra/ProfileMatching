@@ -10,7 +10,7 @@ using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
-    [ApiController]
+    /*[ApiController]
     [Route("[controller]")]
     public class ApplicationController : Controller
     {
@@ -53,5 +53,5 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                     "Error deleting data");
             }
         }
-    }
+    }*/
 }

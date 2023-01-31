@@ -14,7 +14,7 @@ using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
-    public class ApplicationService : IApplicationService
+    /*public class ApplicationService : IApplicationService
     {
         private readonly ApplicationDbContext _context;
         private readonly ISaveResults results;
@@ -34,9 +34,9 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
             {
                 Application a = new Application()
                 {
-                    ApplicantId= application.ApplicantId,
-                    date= DateTime.Now,
-                    JobPositionId= application.JobPositionId
+                    ApplicantId = application.ApplicantId,
+                    date = DateTime.Now,
+                    JobPositionId = application.JobPositionId
                 };
                 Applicant applicant = getApplicant.getApplicantById(application.ApplicantId);
                 JobPosition jobPosition = getJobPosition.GetJobPositionById(application.JobPositionId);
@@ -56,14 +56,15 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                 ProfileMatchingResult profileMatchingResult = new ProfileMatchingResult()
                 {
                     ApplicationId = a.Id,
-                    application= a,
+                    application = a,
                     Result = finalResult
                 };
 
                 await results.AddResult(profileMatchingResult);
-                
+
                 return true;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
@@ -91,5 +92,5 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         {
             return await _context.applications.FirstOrDefaultAsync(application => application.JobPosition.Id == id);
         }
-    }
+    }*/
 }

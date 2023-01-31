@@ -8,6 +8,7 @@ namespace ProfileMatching.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string SkillSet { get; set; }
+        public string Category { get; set; }
         public Company Company { get; set; }
         public int? CompanyId { get; set; }
         [ForeignKey("CompanyId")]

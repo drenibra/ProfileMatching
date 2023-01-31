@@ -1,9 +1,10 @@
-﻿using ProfileMatching.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using ProfileMatching.Models;
 
 namespace ProfileMatching.ProfileMatchLayer.Applicants
 {
-    public interface IGetApplicant
+    public interface IGetUser
     {
-        Applicant getApplicantById(int id);
+        Task<ActionResult<AppUser>> GetUserById(string id);
     }
 }

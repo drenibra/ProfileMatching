@@ -4,13 +4,13 @@
 
 namespace ProfileMatching.Migrations
 {
-    public partial class AppUserSurnameAdded : Migration
+    public partial class AddedCategory : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Surname",
-                table: "AspNetUsers",
+                name: "Category",
+                table: "jobPositions",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
@@ -19,8 +19,8 @@ namespace ProfileMatching.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Surname",
-                table: "AspNetUsers");
+                name: "Category",
+                table: "jobPositions");
         }
     }
 }

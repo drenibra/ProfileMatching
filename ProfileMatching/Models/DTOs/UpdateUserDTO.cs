@@ -2,7 +2,7 @@
 
 namespace ProfileMatching.Models.DTOs
 {
-    public class RegisterDTO
+    public class UpdateUserDTO
     {
         [Required]
         public string Name { get; set; }
@@ -16,5 +16,7 @@ namespace ProfileMatching.Models.DTOs
         public string Password { get; set; }
         [Required]
         public string Username { get; set; }
+        public string? Skills { get; set; }
+        public List<Document>? Documents { get; set; }
     }
 }

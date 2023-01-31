@@ -7,7 +7,7 @@ using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
-    public interface IApplicationService
+    /*public interface IApplicationService
     {
         Task<bool> apply(ApplicationDTO application);
 
@@ -16,5 +16,5 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         Task<Application> getApplicationsByJobId(int id);
 
         Task<string> deleteApplication(int id);
-    }
+    }*/
 }

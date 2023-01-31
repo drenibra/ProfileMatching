@@ -11,8 +11,23 @@ namespace ProfileMatching.Extensions
 {
     public class Seed
     {
-        public static async Task SeedData(ApplicationDbContext context, UserManager<AppUser> userManager)
+        public static async Task SeedData(ApplicationDbContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            if (!roleManager.RoleExistsAsync("Administrator").Result)
+            {
+                await roleManager.CreateAsync(new IdentityRole("Administrator")); 
+            }
+
+            if (!roleManager.RoleExistsAsync("Applicant").Result)
+            {
+                await roleManager.CreateAsync(new IdentityRole("Applicant"));
+            }
+
+            if (!roleManager.RoleExistsAsync("Recruiter").Result)
+            {
+                await roleManager.CreateAsync(new IdentityRole("Recruiter"));
+            }
+
             if (!userManager.Users.Any())
             {
                 var users = new List<AppUser>
@@ -25,6 +40,7 @@ namespace ProfileMatching.Extensions
                 foreach (var user in users)
                 {
                     await userManager.CreateAsync(user, "Pa$$w0rd");
+                    await userManager.AddToRoleAsync(user, "Administrator");
                 }
             }
             if (!context.jobPositions.Any()) 
@@ -33,6 +49,7 @@ namespace ProfileMatching.Extensions
                 await context.jobPositions.AddRangeAsync(jobPosition);
                 await context.SaveChangesAsync();
             }
+            
         }
     }
 }

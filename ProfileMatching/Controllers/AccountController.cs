@@ -17,11 +17,18 @@ namespace ProfileMatching.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly TokenService _tokenService;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, TokenService tokenService)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AccountController(
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager,
+            TokenService tokenService,
+            RoleManager<IdentityRole> roleManager
+         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _roleManager = roleManager;
         }
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDto)
@@ -57,13 +64,14 @@ namespace ProfileMatching.Controllers
                 Email = registerDto.Email,
                 Name = registerDto.Name,
                 Surname = registerDto.Surname,
-                UserName = registerDto.Username
+                UserName = registerDto.Username,
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "Applicant");
                 return CreateUserObject(user);
             }
 
