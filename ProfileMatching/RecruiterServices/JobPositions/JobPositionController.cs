@@ -5,32 +5,29 @@ using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.RecruiterServices.JobPositions
-{
-    [EnableCors]
+{ 
     [ApiController]
     [Route("api/[controller]")]
     public class JobPositionController : Controller
     {
         private readonly IJobPosition contract;
-        public JobPositionController(IJobPosition contract)
+        private IWebHostEnvironment env;
+        public JobPositionController(IJobPosition contract, IWebHostEnvironment env)
         {
             this.contract = contract;
-        }
-        [HttpGet]
-        public IActionResult GetJobPositions()
-        {
-            return Ok(contract.GetJobPositions());
+            this.env = env;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetJobPositionById(int id)
+        [HttpGet]
+        public async Task<IActionResult> GetJobPositions()
         {
-            return Ok(await contract.GetJobPositionById(id));
+            return Ok(await contract.GetJobPositions(this.env));
         }
+
         [HttpPost]
         public async Task<IActionResult> AddJobPosition(JobPositionDTO jobPosition)
         {
-            return Ok(await contract.AddJobPosition(jobPosition));
+            return Ok(await contract.AddJobPosition(this.env, jobPosition));
         }
 
         [HttpDelete("{id}")]

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
+using ProfileMatching.Helpers;
 using ProfileMatching.Models;
-using ProfileMatching.ProfileMatchLayer.Documents.Helpers;
 using System.IO;
 
 namespace ProfileMatching.ProfileMatchLayer.Documents
@@ -10,13 +10,13 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
     public class DocumentService : IDocuments, IGetDocumetsByApplicantID
     {
         private ApplicationDbContext context;
-        private IWebHostEnvironment _env;
+        private IWebHostEnvironment env;
         private FileSaver fileSaver;
 
-        public DocumentService(ApplicationDbContext context, IWebHostEnvironment _env) {
+        public DocumentService(ApplicationDbContext context, IWebHostEnvironment env) {
             this.context=context;
-            this._env = _env;
-            fileSaver = new FileSaver(_env);
+            this.env = env;
+            fileSaver = new FileSaver(this.env);
         }
 
         public DocumentService(ApplicationDbContext context)

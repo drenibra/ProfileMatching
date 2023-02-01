@@ -6,11 +6,12 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea, Grid } from '@mui/material';
 import useFetch from './useFetch';
 import { Container } from '@mui/system';
-
+//import {Directory} from '../../../wwwroot/assets/images/';
 
 export default function JobPosition() {
     const {data: jPosition, isPending, error} = useFetch('api/JobPosition');
-    console.log(jPosition);
+    var path = "../../../wwwroot/assets/images/";
+    
   return (
     <Container>
     <Grid container spacing={12}>
@@ -23,9 +24,9 @@ export default function JobPosition() {
                             <CardMedia
                                 component="img"
                                 height="140"
-                                image="/static/images/cards/contemplative-reptile.jpg"
-                                alt="green iguana" />
+                                image={path+item.company.logo} />
                             <CardContent>
+                                {console.log(item.company.logo)}
                                 <Typography gutterBottom variant="h5" component="div">
                                 {item.title}
                                 </Typography>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileMatching.Models;
-using ProfileMatching.ProfileMatchLayer.Documents.Helpers;
+using ProfileMatching.Helpers;
 
 namespace ProfileMatching.ProfileMatchLayer.Documents
 {

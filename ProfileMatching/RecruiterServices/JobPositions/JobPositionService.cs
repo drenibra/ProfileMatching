@@ -11,14 +11,16 @@ namespace ProfileMatching.RecruiterServices.JobPositions
     {
         private readonly ApplicationDbContext _context;
         private ICompanyExistence company;
+        private IWebHostEnvironment? _env = null;
         public JobPositionService(ApplicationDbContext _context)
         {
             this._context = _context;
-            company = new CompanyService(this._context);
         }
 
-        public async Task<string> AddJobPosition(JobPositionDTO jobPosition)
+        public async Task<string> AddJobPosition(IWebHostEnvironment env, JobPositionDTO jobPosition)
         {
+            _env = env;
+            company = new CompanyService(this._context, this._env);
             if (company.IsExistence(jobPosition.companyId))
             {
                 DateTime today = DateTime.Now;
@@ -31,6 +33,7 @@ namespace ProfileMatching.RecruiterServices.JobPositions
                     SkillSet = jobPosition.SkillSet,
                     ExpiryDate = jobPosition.ExpiryDate,
                     CreatedAt = today
+                    //Company =await company.GetCompanyById(jobPosition.companyId)
                 };
                 _context.jobPositions.Add(job);
                 await _context.SaveChangesAsync();
@@ -51,16 +54,29 @@ namespace ProfileMatching.RecruiterServices.JobPositions
             return "Pozita e punes nuk u gjend!";
         }
 
-        public List<JobPosition> GetJobPositions()
+        public async Task<List<JobPosition>> GetJobPositions(IWebHostEnvironment env)
         {
+            _env = env;
+            company = new CompanyService(this._context, this._env);
             List<JobPosition> result = new List<JobPosition>();
-            foreach (JobPosition job in _context.jobPositions)
+            var jobs = await _context.jobPositions.ToListAsync();
+            try
             {
-                if (job.ExpiryDate.CompareTo(DateTime.Now) == -1)
+                foreach (JobPosition job in jobs)
                 {
-                    continue;
+                    if (job.ExpiryDate.CompareTo(DateTime.Now) == -1)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        job.Company = company.GetCompanyById(job.CompanyId);
+                        result.Add(job);
+                    }
                 }
-                else result.Add(job);
+            }catch(Exception ex)
+            {
+                string message = ex.Message;
             }
             return result;
         }
@@ -82,11 +98,6 @@ namespace ProfileMatching.RecruiterServices.JobPositions
             _context.jobPositions.Update(job);
             _context.SaveChanges();
             return new JsonResult("Pozita e punes u perditsua me sukses!");
-        }
-
-        async Task<JobPosition> IJobPosition.GetJobPositionById(int id)
-        {
-            return await _context.jobPositions.FirstOrDefaultAsync(JobPosition => JobPosition.Id == id);
         }
     }
 }

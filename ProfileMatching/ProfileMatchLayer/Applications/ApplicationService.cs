@@ -40,8 +40,6 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                 };
                 Applicant applicant = getApplicant.getApplicantById(application.ApplicantId);
                 JobPosition jobPosition = getJobPosition.GetJobPositionById(application.JobPositionId);
-                a.Applicant = applicant;
-                a.JobPosition = jobPosition;
 
                 _context.applications.Add(a);
                 await _context.SaveChangesAsync();
@@ -51,7 +49,6 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
 
                 int result = calculate.CountSimilarities(jobRequirements, applicantSkills);
                 double finalResult = calculate.GetPercentage(result, jobRequirements);
-
 
                 ProfileMatchingResult profileMatchingResult = new()
                 {
@@ -91,7 +88,6 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
 
             return await _context.applications.ToListAsync();
         }
-
 
         public async Task<Application> getApplicationsByJobId(int id)
         {
