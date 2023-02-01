@@ -7,7 +7,7 @@ using ProfileMatching.Models.DTOs;
 using ProfileMatching.Services;
 using System.Security.Claims;
 
-namespace ProfileMatching.Controllers
+namespace ProfileMatching.ProfileMatchLayer.Users
 {
     [AllowAnonymous]
     [ApiController]
@@ -84,6 +84,15 @@ namespace ProfileMatching.Controllers
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
 
             return CreateUserObject(user);
+        }
+        [Authorize]
+        [HttpGet("roles")]
+        public async Task<IEnumerable<string>> GetRoles()
+        {
+            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            var roles = _userManager.GetRolesAsync(user).Result;
+
+            return roles;
         }
 
         private UserDTO CreateUserObject(AppUser user)

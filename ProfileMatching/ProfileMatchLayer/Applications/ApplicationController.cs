@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProfileMatching.Models;
@@ -10,8 +11,9 @@ using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
-    /*[ApiController]
+    [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "Recruiter, Administrator")]
     public class ApplicationController : Controller
     {
         private readonly ILogger<ApplicationController> _logger;
@@ -53,5 +55,5 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                     "Error deleting data");
             }
         }
-    }*/
+    }
 }

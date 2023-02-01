@@ -7,17 +7,17 @@ using ProfileMatching.Models.DTOs;
 using ProfileMatching.ProfileMatchLayer.Documents;
 using System.Xml.Linq;
 
-namespace ProfileMatching.ProfileMatchLayer.Applicants
+namespace ProfileMatching.ProfileMatchLayer.Users
 {
     public class UserService : ControllerBase, IUserService, IGetUser
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ApplicationDbContext _dbContext;
 
-        public UserService(UserManager<AppUser> userManager, ApplicationDbContext dbContext)
+        public UserService(UserManager<AppUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
-            _dbContext = dbContext;
+            _dbContext = context;
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
@@ -48,7 +48,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applicants
                         {
                             return BadRequest(result.Errors);
                         }
-                    return NoContent();
+                        return NoContent();
             */
 
             var dbUser = await _dbContext.AppUsers.FindAsync(id);

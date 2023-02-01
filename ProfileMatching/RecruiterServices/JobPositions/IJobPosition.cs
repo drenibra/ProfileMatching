@@ -6,7 +6,7 @@ namespace ProfileMatching.RecruiterServices.JobPositions
 {
     public interface IJobPosition
     {
-        List<JobPosition> GetJobPositions();
+        Task<ActionResult<List<JobPosition>>> GetJobPositions();
         Task<JobPosition> GetJobPositionById(int id);
         Task<string> AddJobPosition(JobPositionDTO jobPosition);
         Task<string> DeleteJobPosition(int id);

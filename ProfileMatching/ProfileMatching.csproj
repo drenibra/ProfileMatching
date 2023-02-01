@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ProfileMatchLayer\Users\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

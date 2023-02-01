@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProfileMatching.Models;
 
-namespace ProfileMatching.ProfileMatchLayer.Applicants
+namespace ProfileMatching.ProfileMatchLayer.Users
 {
     public interface IGetUser
     {

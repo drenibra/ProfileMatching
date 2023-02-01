@@ -8,24 +8,26 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using ProfileMatching.ProfileMatchLayer.Results;
 using ProfileMatching.ProfileMatchLayer.Results.Helpers;
-using ProfileMatching.ProfileMatchLayer.Applicants;
+using ProfileMatching.ProfileMatchLayer.Users;
 using ProfileMatching.RecruiterServices.JobPositions;
 using ProfileMatching.Models.DTOs;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
-    /*public class ApplicationService : IApplicationService
+    public class ApplicationService : IApplicationService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ISaveResults results;
-        private readonly IGetApplicant getApplicant;
-        private readonly IGetJobPosition getJobPosition;
-        public ApplicationService(ApplicationDbContext context)
+        private readonly ISaveResults _results;
+        private readonly IGetUser _getUser;
+        private readonly IGetJobPosition _getJobPosition;
+        public ApplicationService(ApplicationDbContext context, IGetUser _getUser)
         {
             _context = context;
-            results = new ResultService(context);
-            getApplicant = new ApplicantService(context);
-            getJobPosition = new JobPositionService(context);
+            _results = new ResultService(context);
+            _getUser = _getUser;
+            _getJobPosition = new JobPositionService(context);
         }
         public async Task<bool> apply(ApplicationDTO application)
         {
@@ -38,8 +40,9 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                     date = DateTime.Now,
                     JobPositionId = application.JobPositionId
                 };
-                Applicant applicant = getApplicant.getApplicantById(application.ApplicantId);
-                JobPosition jobPosition = getJobPosition.GetJobPositionById(application.JobPositionId);
+
+                AppUser applicant = _getUser.GetUserById(application.ApplicantId).Result.Value;
+                JobPosition jobPosition = _getJobPosition.GetJobPositionById(application.JobPositionId);
                 a.Applicant = applicant;
                 a.JobPosition = jobPosition;
 
@@ -60,7 +63,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                     Result = finalResult
                 };
 
-                await results.AddResult(profileMatchingResult);
+                await _results.AddResult(profileMatchingResult);
 
                 return true;
             }
@@ -69,7 +72,6 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                 return false;
             }
         }
-
         public async Task<string> deleteApplication(int id)
         {
             var result = await _context.applications.FirstOrDefaultAsync(c => c.Id == id);
@@ -81,16 +83,13 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
             }
             return "Nuk ka rezultate per kete aplikim!";
         }
-
         public async Task<List<Application>> getApplications()
         {
             return await _context.applications.ToListAsync();
         }
-
-
         public async Task<Application> getApplicationsByJobId(int id)
         {
             return await _context.applications.FirstOrDefaultAsync(application => application.JobPosition.Id == id);
         }
-    }*/
+    }
 }

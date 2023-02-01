@@ -8,12 +8,15 @@ using ProfileMatching.Extensions;
 using ProfileMatching.Models;
 using ProfileMatching.RecruiterServices;
 using ProfileMatching.Services;
-using ProfileMatching.ProfileMatchLayer.Applicants;
+using ProfileMatching.ProfileMatchLayer.Users;
 using ProfileMatching.ProfileMatchLayer.Applications;
 using ProfileMatching.ProfileMatchLayer.Documents;
 using ProfileMatching.ProfileMatchLayer.Results;
 using ProfileMatching.RecruiterServices.Companies;
 using ProfileMatching.RecruiterServices.JobPositions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 internal class Program
 {
@@ -21,13 +24,11 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-
         builder.Services.AddControllers(opt =>
         {
             // Cdo Endpoint kerkon authentication, pervec atyre qe ia shtojme [AllowAnonnymous]
-            //var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-            //opt.Filters.Add(new AuthorizeFilter(policy));
+            var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+            opt.Filters.Add(new AuthorizeFilter(policy));
         });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
@@ -41,27 +42,23 @@ internal class Program
 
         builder.Services.AddScoped<ICompany, CompanyService>();
         builder.Services.AddScoped<IJobPosition, JobPositionService>();
-/*        builder.Services.AddScoped<IApplicantService, ApplicantService>();
-        builder.Services.AddScoped<IApplicationService, ApplicationService>();*/
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IApplicationService, ApplicationService>();
+        builder.Services.AddScoped<IGetUser, UserService>();
         builder.Services.AddScoped<IDocuments, DocumentService>();
         builder.Services.AddScoped<IResults, ResultService>();
         builder.Services.AddControllersWithViews();
-        builder.Services.AddDefaultIdentity<AppUser>()
-        .AddRoles<IdentityRole>()
+        builder.Services.AddDefaultIdentity<AppUser>().AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>();
         builder.Services.AddIdentityServices(builder.Configuration);
-        
-
-        //var userManager = builder.Services.GetRequiredService<UserManager<AppUser>>();
-
-        /*builder.Services.AddAuthorization(options =>
+        builder.Services.AddAuthorization(options =>
         {
             options.AddPolicy("RequireAdministratorRole",
                  policy => policy.RequireRole("Administrator"));
-        });*/
+        });
 
         var app = builder.Build();
+
         var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 
         using (var scope = scopeFactory.CreateScope())

@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProfileMatching.Extensions
+namespace ProfileMatching.Services
 {
     public class Seed
     {
@@ -15,7 +15,7 @@ namespace ProfileMatching.Extensions
         {
             if (!roleManager.RoleExistsAsync("Administrator").Result)
             {
-                await roleManager.CreateAsync(new IdentityRole("Administrator")); 
+                await roleManager.CreateAsync(new IdentityRole("Administrator"));
             }
 
             if (!roleManager.RoleExistsAsync("Applicant").Result)
@@ -43,13 +43,18 @@ namespace ProfileMatching.Extensions
                     await userManager.AddToRoleAsync(user, "Administrator");
                 }
             }
-            if (!context.jobPositions.Any()) 
+            if (!context.companies.Any())
             {
-                var jobPosition = new JobPosition { Title = "Software Developer", Description = "Lorem ipsum", SkillSet = "React, .NET", CompanyId = 1, ExpiryDate = DateTime.Parse("01/30/2023") };    
+                var company = new Company { Name = "Test", Location = "Prishtine", Logo = "123.png" };
+                await context.companies.AddRangeAsync(company);
+                await context.SaveChangesAsync();
+            }
+            if (!context.jobPositions.Any())
+            {
+                var jobPosition = new JobPosition { Title = "Software Developer", Description = "Lorem ipsum", SkillSet = "React, .NET", CompanyId = 1, ExpiryDate = DateTime.Parse("02/07/2023"), Category = "Software Developer" };
                 await context.jobPositions.AddRangeAsync(jobPosition);
                 await context.SaveChangesAsync();
             }
-            
         }
     }
 }

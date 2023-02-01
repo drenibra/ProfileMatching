@@ -7,7 +7,7 @@ using ProfileMatching.Models.DTOs;
 namespace ProfileMatching.RecruiterServices.JobPositions
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class JobPositionController : Controller
     {
         private readonly IJobPosition contract;
@@ -16,6 +16,7 @@ namespace ProfileMatching.RecruiterServices.JobPositions
             this.contract = contract;
         }
         [HttpGet]
+    [Authorize(Policy = "RequireAdministratorRole")]
         public IActionResult GetJobPositions()
         {
             return Ok(contract.GetJobPositions());
