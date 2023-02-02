@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
-using ProfileMatching.ProfileMatchLayer.Applicants;
 using ProfileMatching.ProfileMatchLayer.Applications;
 using ProfileMatching.ProfileMatchLayer.Results.Helpers;
 using ProfileMatching.RecruiterServices.JobPositions;

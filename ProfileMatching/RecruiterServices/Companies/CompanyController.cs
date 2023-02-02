@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
@@ -6,7 +7,8 @@ using ProfileMatching.Models.DTOs;
 namespace ProfileMatching.RecruiterServices.Companies
 
 {
-    [Route("[controller]")]
+    [AllowAnonymous]
+    [Route("api/v1/[controller]")]
     public class CompanyController : Controller
     {
         private ICompany contract;

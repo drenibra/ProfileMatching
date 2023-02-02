@@ -9,7 +9,7 @@ import { Container } from '@mui/system';
 //import {Directory} from '../../../wwwroot/assets/images/';
 
 export default function JobPosition() {
-    const {data: jPosition, isPending, error} = useFetch('api/JobPosition');
+    const {data: jPosition, isPending, error} = useFetch('api/v1/JobPosition');
     var path = "images/";
     
   return (

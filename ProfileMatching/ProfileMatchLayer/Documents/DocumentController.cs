@@ -28,7 +28,7 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
         }
 
         [HttpPost]
-        public async Task<JsonResult> SaveDocuments(List<IFormFile> file, int id)
+        public async Task<JsonResult> SaveDocuments(List<IFormFile> file, string id)
         {
            await contract.SaveDocumentsAsync(file, id);
             return new JsonResult("Saved!");

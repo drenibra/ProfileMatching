@@ -5,6 +5,6 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
 {
     public interface IGetDocumetsByApplicantID
     {
-        List<Document> GetDocumentsByApplicantId(int id);
+        List<Document> GetDocumentsByApplicantId(string id);
     }
 }

@@ -6,7 +6,8 @@ using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.RecruiterServices.JobPositions
-{ 
+{
+    [AllowAnonymous]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class JobPositionController : Controller
@@ -18,9 +19,9 @@ namespace ProfileMatching.RecruiterServices.JobPositions
             this.contract = contract;
             this.env = env;
         }
-        [HttpGet("{id}")]
+        /*[HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetJobPositionById(int id)
+        public async Task<IActionResult> GetJobPositionById(int id)*/
 
         [HttpGet]
         public async Task<IActionResult> GetJobPositions()

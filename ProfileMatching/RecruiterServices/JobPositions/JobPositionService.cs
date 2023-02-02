@@ -34,8 +34,8 @@ namespace ProfileMatching.RecruiterServices.JobPositions
                     Description = jobPosition.Description,
                     SkillSet = jobPosition.SkillSet,
                     ExpiryDate = jobPosition.ExpiryDate,
-                    CreatedAt = today
-                    //Company =await company.GetCompanyById(jobPosition.companyId)
+                    CreatedAt = today,
+                    Category = jobPosition.category
                 };
                 _context.jobPositions.Add(job);
                 await _context.SaveChangesAsync();

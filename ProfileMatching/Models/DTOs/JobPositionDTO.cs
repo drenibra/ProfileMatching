@@ -7,6 +7,7 @@
         public string SkillSet { get; set; }
         public DateTime ExpiryDate { get; set; }
         public int companyId { get; set; }
+        public string  category { get; set; }
 
     }
 }

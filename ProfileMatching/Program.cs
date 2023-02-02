@@ -39,6 +39,14 @@ internal class Program
         builder.Services.AddDbContext<ApplicationDbContext>(option =>
             option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+        builder.Services.AddCors(option =>
+        {
+            option.AddDefaultPolicy(options =>
+            {
+                options.AllowAnyOrigin().AllowAnyMethod().WithHeaders("Access-Control-Allow-Origin");
+            });
+        });
+
         builder.Services.AddControllersWithViews();
 
         builder.Services.AddScoped<ICompany, CompanyService>();
@@ -88,7 +96,7 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
-
+        app.UseCors();
 
         app.UseAuthentication();
         app.UseAuthorization();

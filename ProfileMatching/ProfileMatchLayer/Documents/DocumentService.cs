@@ -23,7 +23,7 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
         {
             this.context=context;
         }
-        public async Task<string> SaveDocumentsAsync(List<IFormFile> files, int id)
+        public async Task<string> SaveDocumentsAsync(List<IFormFile> files, string id)
         {
             string path = "assests/documents";
             try
@@ -59,12 +59,12 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
             return await context.Documents.ToListAsync();
         }
 
-        public List<Document> GetDocumentsByApplicantId(int id)
+        public List<Document> GetDocumentsByApplicantId(string id)
         {
             List<Document> documents = new List<Document>();
             foreach(Document d in context.Documents)
             {
-                if(d.ApplicantId == id)
+                if(d.ApplicantId.Equals(id))
                 {
                     documents.Add(d);
                 }
