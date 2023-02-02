@@ -10,10 +10,10 @@ import { Container } from '@mui/system';
 
 export default function JobPosition() {
     const {data: jPosition, isPending, error} = useFetch('api/JobPosition');
-    var path = "../../../wwwroot/assets/images/";
+    var path = "images/";
     
   return (
-    <Container>
+    <Container mt={12}>
     <Grid container spacing={12}>
         {
             jPosition.map(item =>{
@@ -23,10 +23,9 @@ export default function JobPosition() {
                         <CardActionArea>
                             <CardMedia
                                 component="img"
-                                height="140"
+                                height="200"
                                 image={path+item.company.logo} />
                             <CardContent>
-                                {console.log(item.company.logo)}
                                 <Typography gutterBottom variant="h5" component="div">
                                 {item.title}
                                 </Typography>
