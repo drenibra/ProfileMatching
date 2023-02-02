@@ -8,40 +8,51 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using ProfileMatching.ProfileMatchLayer.Results;
 using ProfileMatching.ProfileMatchLayer.Results.Helpers;
-using ProfileMatching.ProfileMatchLayer.Applicants;
+using ProfileMatching.ProfileMatchLayer.Users;
 using ProfileMatching.RecruiterServices.JobPositions;
 using ProfileMatching.Models.DTOs;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
     public class ApplicationService : IApplicationService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ISaveResults results;
-        private readonly IGetApplicant getApplicant;
-        private readonly IGetJobPosition getJobPosition;
-        public ApplicationService(ApplicationDbContext context)
+        private readonly ISaveResults _results;
+        private readonly IGetJobPosition _getJobPosition;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IGetCurrentUser _getCurrentUser;
+        public ApplicationService(ApplicationDbContext context, IGetCurrentUser getCurrentUser, UserManager<AppUser> userManager)
         {
             _context = context;
-            results = new ResultService(context);
-            getApplicant = new ApplicantService(context);
-            getJobPosition = new JobPositionService(context);
+            _results = new ResultService(context);
+            _getJobPosition = new JobPositionService(context);
+            _userManager = userManager;
+            _getCurrentUser = getCurrentUser;
         }
         public async Task<bool> apply(ApplicationDTO application)
         {
             CalculateMatch calculate = new CalculateMatch();
             try
             {
+                //This returns null
+                //AppUser applicant = _getCurrentUser.GetCurrentUser().Result.Value;
+
+                AppUser applicant = await _userManager.FindByIdAsync(application.applicantId);
+
                 Application a = new Application()
                 {
-                    ApplicantId= application.ApplicantId,
-                    date= DateTime.Now,
-                    JobPositionId= application.JobPositionId
+                    ApplicantId = application.applicantId,
+                    date = DateTime.Now,
+                    JobPositionId = application.jobPositionId
                 };
-                Applicant applicant = getApplicant.getApplicantById(application.ApplicantId);
-                JobPosition jobPosition = getJobPosition.GetJobPositionById(application.JobPositionId);
-                a.Applicant = applicant;
-                a.JobPosition = jobPosition;
+
+                JobPosition jobPosition = _getJobPosition.GetJobPositionById(application.jobPositionId);
+
+                /*a.Applicant = applicant;
+                a.JobPosition = jobPosition;*/
 
                 _context.applications.Add(a);
                 await _context.SaveChangesAsync();
@@ -50,25 +61,26 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                 string applicantSkills = applicant.Skills;
 
                 int result = calculate.CountSimilarities(jobRequirements, applicantSkills);
+
                 double finalResult = calculate.GetPercentage(result, jobRequirements);
 
 
                 ProfileMatchingResult profileMatchingResult = new ProfileMatchingResult()
                 {
                     ApplicationId = a.Id,
-                    application= a,
+                    application = a,
                     Result = finalResult
                 };
 
-                await results.AddResult(profileMatchingResult);
-                
+                await _results.AddResult(profileMatchingResult);
+
                 return true;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
         }
-
         public async Task<string> deleteApplication(int id)
         {
             var result = await _context.applications.FirstOrDefaultAsync(c => c.Id == id);
@@ -80,13 +92,10 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
             }
             return "Nuk ka rezultate per kete aplikim!";
         }
-
         public async Task<List<Application>> getApplications()
         {
             return await _context.applications.ToListAsync();
         }
-
-
         public async Task<Application> getApplicationsByJobId(int id)
         {
             return await _context.applications.FirstOrDefaultAsync(application => application.JobPosition.Id == id);

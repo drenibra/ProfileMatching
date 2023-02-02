@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileMatching.Models;
 using ProfileMatching.ProfileMatchLayer.Documents.Helpers;
@@ -8,6 +9,7 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
     //[EnableCors("appcors")]
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class DocumentController:Controller
     {
         private IWebHostEnvironment _env;

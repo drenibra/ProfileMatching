@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfileMatching.Configurations;
 
@@ -11,9 +12,10 @@ using ProfileMatching.Configurations;
 namespace ProfileMatching.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230130153945_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,7 +170,6 @@ namespace ProfileMatching.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ApplicantId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("JobPositionId")
@@ -303,12 +304,11 @@ namespace ProfileMatching.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ApplicantId")
                         .HasColumnType("int");
-
-                    b.Property<string>("ApplicantId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -331,7 +331,7 @@ namespace ProfileMatching.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantId1");
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Documents");
 
@@ -346,11 +346,7 @@ namespace ProfileMatching.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -480,9 +476,7 @@ namespace ProfileMatching.Migrations
                 {
                     b.HasOne("ProfileMatching.Models.AppUser", "Applicant")
                         .WithMany()
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicantId");
 
                     b.HasOne("ProfileMatching.Models.JobPosition", "JobPosition")
                         .WithMany()
@@ -506,22 +500,16 @@ namespace ProfileMatching.Migrations
 
             modelBuilder.Entity("ProfileMatching.Models.Document", b =>
                 {
-                    b.HasOne("ProfileMatching.Models.AppUser", "Applicant")
+                    b.HasOne("ProfileMatching.Models.AppUser", null)
                         .WithMany("Documents")
-                        .HasForeignKey("ApplicantId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Applicant");
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("ProfileMatching.Models.JobPosition", b =>
                 {
                     b.HasOne("ProfileMatching.Models.Company", "Company")
                         .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
                 });

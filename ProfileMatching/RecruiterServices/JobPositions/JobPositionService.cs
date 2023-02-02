@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
 using ProfileMatching.RecruiterServices.Companies;
+using System.Diagnostics.Contracts;
 
 namespace ProfileMatching.RecruiterServices.JobPositions
-{
+{ 
     public class JobPositionService : IJobPosition,IGetJobPosition
     {
         private readonly ApplicationDbContext _context;
@@ -50,7 +52,6 @@ namespace ProfileMatching.RecruiterServices.JobPositions
             }
             return "Pozita e punes nuk u gjend!";
         }
-
         public List<JobPosition> GetJobPositions()
         {
             List<JobPosition> result = new List<JobPosition>();
