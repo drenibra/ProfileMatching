@@ -6,7 +6,6 @@ using ProfileMatching.Models.DTOs;
 namespace ProfileMatching.RecruiterServices.Companies
 
 {
-    [ApiController]
     [Route("[controller]")]
     public class CompanyController : Controller
     {

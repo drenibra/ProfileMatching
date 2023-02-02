@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
+using ProfileMatching.Helpers;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
 using System;
@@ -11,9 +12,11 @@ namespace ProfileMatching.RecruiterServices.Companies
     public class CompanyService : ICompany, ICompanyExistence
     {
         private readonly ApplicationDbContext _context;
-        public CompanyService(ApplicationDbContext _context)
+        private readonly IWebHostEnvironment env;
+        public CompanyService(ApplicationDbContext _context , IWebHostEnvironment env)
         {
             this._context = _context;
+            this.env = env;
         }
 
         public async Task<List<Company>> GetCompanies()
@@ -25,16 +28,27 @@ namespace ProfileMatching.RecruiterServices.Companies
         {
             return await _context.companies.FirstOrDefaultAsync(company => company.Id == id);
         }
+        
+        public Company GetCompanyById(int? id)
+        {
+            return  _context.companies.FirstOrDefault(company => company.Id == id);
+        }
 
         public async Task<Company> AddCompany(CompanyDTO company)
         {
+            string path = "Views/frontend/public/images";
+            FileSaver fileSaver = new FileSaver(env);
+            string fileName = $"{Guid.NewGuid()}{Path.GetExtension(company.image.FileName)}";
+
             Company c = new Company()
             {
-                Name= company.Name,
-                Location= company.Location
+                Name = company.Name,
+                Location = company.Location,
+                Logo = fileName
             };
             _context.companies.Add(c);
             await _context.SaveChangesAsync();
+            await fileSaver.FileSaveDocsAsync(company.image, path, fileName);
             return c;
         }
 
@@ -71,5 +85,6 @@ namespace ProfileMatching.RecruiterServices.Companies
             }
             return false;
         }
+
     }
 }

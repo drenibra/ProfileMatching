@@ -6,6 +6,8 @@ namespace ProfileMatching.ProfileMatchLayer.Results.Helpers
     {
         public int CountSimilarities(string jobRequirements, string skills)
         {
+            jobRequirements= jobRequirements.ToLower();
+            skills= skills.ToLower();
             string[] jobReqs = jobRequirements.Split(" ");
             string[] applicantSkills = skills.Split(" ");
             var similarities = jobReqs.Intersect(applicantSkills).ToList();
@@ -18,8 +20,10 @@ namespace ProfileMatching.ProfileMatchLayer.Results.Helpers
                 string[] jobReqs = jobRequirements.Split(" ");
                 int length = jobReqs.Length;
                 double result = ((double)number / length) * 100;
-                return result;
-            }catch(Exception)
+                
+                return Math.Round((Double)result, 2);
+            }
+            catch(Exception)
             {
                 return 0;
             }
