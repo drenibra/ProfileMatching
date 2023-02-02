@@ -52,7 +52,7 @@ namespace ProfileMatching.RecruiterServices.JobPositions
             }
             return "Pozita e punes nuk u gjend!";
         }
-        public async Task<ActionResult<List<JobPosition>>> GetJobPositions()
+        public List<JobPosition> GetJobPositions()
         {
             List<JobPosition> result = new List<JobPosition>();
             foreach (JobPosition job in _context.jobPositions)

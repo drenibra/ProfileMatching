@@ -7,7 +7,7 @@ using ProfileMatching.Models.DTOs;
 using ProfileMatching.ProfileMatchLayer.Users;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public class UserController : Controller
 {
     private readonly IUserService _contract;
@@ -24,18 +24,26 @@ public class UserController : Controller
         return await _userManager.Users.ToListAsync().Result;
         *//*return Ok(await _contract.GetUsers());*//*
     }*/
-    [Authorize]
     [HttpGet]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
     {
         return await _userManager.Users.ToListAsync();
     }
+    [HttpGet("{id}")]
+    [Authorize(Roles = "Administrator")]
+    public async Task<ActionResult<AppUser>> GetUserById(string id)
+    {
+        return Ok(await _contract.GetUserById(id));
+    }
     [HttpPut("{id}")]
+    [Authorize(Roles = "Administrator,Applicant")]
     public async Task<IActionResult> UpdateUser(string id, AppUser user)
     {
         return Ok(await _contract.UpdateUser(id, user));
     }
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteUser(string id)
     {
         return Ok(await _contract.DeleteUser(id));

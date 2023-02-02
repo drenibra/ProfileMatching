@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ProfileMatching.ProfileMatchLayer.Results
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/[controller]")]
+    [Authorize(Roles = "Administrator, Recruiter")]
     public class ResultController:Controller
     {
         private readonly IResults _contract;

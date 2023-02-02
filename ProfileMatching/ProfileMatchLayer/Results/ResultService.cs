@@ -14,7 +14,6 @@ namespace ProfileMatching.ProfileMatchLayer.Results
         public ResultService(ApplicationDbContext contex) { 
             _contex = contex;
         }
-
         public async Task<bool> AddResult(ProfileMatchingResult Result)
         {
             try
@@ -22,12 +21,11 @@ namespace ProfileMatching.ProfileMatchLayer.Results
                 _contex.ProfileMatchingResults.Add(Result);
                 await _contex.SaveChangesAsync();
                 return true;
-            }catch(Exception ex)
+            } catch(Exception ex)
             {
                 return false;
             }
         }
-
         public async Task<List<ProfileMatchingResult>> GetApplicants()
         {
             return await _contex.ProfileMatchingResults.ToListAsync();            

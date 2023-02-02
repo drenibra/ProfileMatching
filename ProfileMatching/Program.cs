@@ -14,8 +14,6 @@ using ProfileMatching.ProfileMatchLayer.Documents;
 using ProfileMatching.ProfileMatchLayer.Results;
 using ProfileMatching.RecruiterServices.Companies;
 using ProfileMatching.RecruiterServices.JobPositions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 internal class Program
@@ -23,6 +21,9 @@ internal class Program
     private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
 
         builder.Services.AddControllers(opt =>
         {
@@ -44,9 +45,11 @@ internal class Program
         builder.Services.AddScoped<IJobPosition, JobPositionService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IApplicationService, ApplicationService>();
-        builder.Services.AddScoped<IGetUser, UserService>();
         builder.Services.AddScoped<IDocuments, DocumentService>();
         builder.Services.AddScoped<IResults, ResultService>();
+
+        builder.Services.AddScoped<IGetCurrentUser, AccountController>();
+
         builder.Services.AddControllersWithViews();
         builder.Services.AddDefaultIdentity<AppUser>().AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>();

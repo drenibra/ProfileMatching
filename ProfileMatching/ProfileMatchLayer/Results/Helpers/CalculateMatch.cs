@@ -11,7 +11,6 @@ namespace ProfileMatching.ProfileMatchLayer.Results.Helpers
             var similarities = jobReqs.Intersect(applicantSkills).ToList();
             return similarities.Count;
         }
-
         public double GetPercentage(int number, string jobRequirements)
         {
             try

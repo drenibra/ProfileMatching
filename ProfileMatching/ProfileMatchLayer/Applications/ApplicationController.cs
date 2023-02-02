@@ -12,8 +12,7 @@ using ProfileMatching.Models.DTOs;
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
     [ApiController]
-    [Route("[controller]")]
-    [Authorize(Roles = "Recruiter, Administrator")]
+    [Route("api/v1/[controller]")]
     public class ApplicationController : Controller
     {
         private readonly ILogger<ApplicationController> _logger;
@@ -25,24 +24,28 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         }
 
         [HttpGet]
+        [Authorize(Roles = "Recruiter, Administrator")]
         public async Task<IActionResult> GetApplications()
         {
             return Ok(await _contract.getApplications());
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Recruiter, Administrator")]
         public async Task<IActionResult> getApplicationsByJobId(int id)
         {
             return Ok(await _contract.getApplicationsByJobId(id));
         }
 
         [HttpPost]
+        [Authorize(Roles = "Applicant")]
         public async Task<IActionResult> Apply(ApplicationDTO application)
         {
             return Ok(await _contract.apply(application));
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Recruiter, Administrator")]
         public async Task<IActionResult> DeleteApplication(int id)
         {
             try

@@ -11,24 +11,21 @@ namespace ProfileMatching.ProfileMatchLayer.Users
 {
     [AllowAnonymous]
     [ApiController]
-    [Route("api/[controller]")]
-    public class AccountController : Controller
+    [Route("api/v1/[controller]")]
+    public class AccountController : Controller, IGetCurrentUser
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly TokenService _tokenService;
-        private readonly RoleManager<IdentityRole> _roleManager;
         public AccountController(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            TokenService tokenService,
-            RoleManager<IdentityRole> roleManager
+            TokenService tokenService
          )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
-            _roleManager = roleManager;
         }
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDto)
@@ -79,22 +76,21 @@ namespace ProfileMatching.ProfileMatchLayer.Users
         }
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<UserDTO>> GetCurrentUser()
+        public async Task<ActionResult<AppUser>> GetCurrentUser()
         {
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
 
-            return CreateUserObject(user);
+            return user;
         }
         [Authorize]
         [HttpGet("roles")]
-        public async Task<IEnumerable<string>> GetRoles()
+        public async Task<IList<string>> GetRoles()
         {
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
             var roles = _userManager.GetRolesAsync(user).Result;
 
             return roles;
         }
-
         private UserDTO CreateUserObject(AppUser user)
         {
             return new UserDTO

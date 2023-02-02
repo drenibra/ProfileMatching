@@ -7,7 +7,7 @@ using ProfileMatching.Models.DTOs;
 namespace ProfileMatching.RecruiterServices.JobPositions
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class JobPositionController : Controller
     {
         private readonly IJobPosition contract;
@@ -16,23 +16,25 @@ namespace ProfileMatching.RecruiterServices.JobPositions
             this.contract = contract;
         }
         [HttpGet]
-    [Authorize(Policy = "RequireAdministratorRole")]
         public IActionResult GetJobPositions()
         {
             return Ok(contract.GetJobPositions());
         }
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetJobPositionById(int id)
         {
             return Ok(await contract.GetJobPositionById(id));
         }
         [HttpPost]
+        [Authorize(Roles = "Recruiter")]
         public async Task<IActionResult> AddJobPosition(JobPositionDTO jobPosition)
         {
             return Ok(await contract.AddJobPosition(jobPosition));
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator, Recruiter")]
         public async Task<IActionResult> DeleteJobPosition(int id)
         {
             try
@@ -47,6 +49,7 @@ namespace ProfileMatching.RecruiterServices.JobPositions
         }
 
         [HttpPut]
+        [Authorize(Roles = "Recruiter")]
         public void UpdateJobPosition(JobPositionDTO jobPosition)
         {
             contract.UpdateJobPosition(jobPosition);

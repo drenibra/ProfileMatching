@@ -13,6 +13,7 @@ using ProfileMatching.RecruiterServices.JobPositions;
 using ProfileMatching.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
@@ -20,31 +21,38 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
     {
         private readonly ApplicationDbContext _context;
         private readonly ISaveResults _results;
-        private readonly IGetUser _getUser;
         private readonly IGetJobPosition _getJobPosition;
-        public ApplicationService(ApplicationDbContext context, IGetUser _getUser)
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IGetCurrentUser _getCurrentUser;
+        public ApplicationService(ApplicationDbContext context, IGetCurrentUser getCurrentUser, UserManager<AppUser> userManager)
         {
             _context = context;
             _results = new ResultService(context);
-            _getUser = _getUser;
             _getJobPosition = new JobPositionService(context);
+            _userManager = userManager;
+            _getCurrentUser = getCurrentUser;
         }
         public async Task<bool> apply(ApplicationDTO application)
         {
             CalculateMatch calculate = new CalculateMatch();
             try
             {
+                //This returns null
+                //AppUser applicant = _getCurrentUser.GetCurrentUser().Result.Value;
+
+                AppUser applicant = await _userManager.FindByIdAsync(application.applicantId);
+
                 Application a = new Application()
                 {
-                    ApplicantId = application.ApplicantId,
+                    ApplicantId = application.applicantId,
                     date = DateTime.Now,
-                    JobPositionId = application.JobPositionId
+                    JobPositionId = application.jobPositionId
                 };
 
-                AppUser applicant = _getUser.GetUserById(application.ApplicantId).Result.Value;
-                JobPosition jobPosition = _getJobPosition.GetJobPositionById(application.JobPositionId);
-                a.Applicant = applicant;
-                a.JobPosition = jobPosition;
+                JobPosition jobPosition = _getJobPosition.GetJobPositionById(application.jobPositionId);
+
+                /*a.Applicant = applicant;
+                a.JobPosition = jobPosition;*/
 
                 _context.applications.Add(a);
                 await _context.SaveChangesAsync();
@@ -53,6 +61,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                 string applicantSkills = applicant.Skills;
 
                 int result = calculate.CountSimilarities(jobRequirements, applicantSkills);
+
                 double finalResult = calculate.GetPercentage(result, jobRequirements);
 
 
