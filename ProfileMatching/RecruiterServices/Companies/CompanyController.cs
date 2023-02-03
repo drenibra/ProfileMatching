@@ -7,6 +7,7 @@ using ProfileMatching.Models.DTOs;
 namespace ProfileMatching.RecruiterServices.Companies
 
 {
+    [AllowAnonymous]
     [Route("api/v1/[controller]")]
     public class CompanyController : Controller
     {
