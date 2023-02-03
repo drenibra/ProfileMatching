@@ -7,7 +7,6 @@ using ProfileMatching.Models.DTOs;
 namespace ProfileMatching.RecruiterServices.Companies
 
 {
-    [AllowAnonymous]
     [Route("api/v1/[controller]")]
     public class CompanyController : Controller
     {
@@ -21,13 +20,13 @@ namespace ProfileMatching.RecruiterServices.Companies
         {
             return Ok(await contract.GetCompanies());
         }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCompany(int id)
         {
             return Ok(await contract.GetCompany(id));
         }
         [HttpPost]
+        [Authorize(Roles = "Adminitrator")]
         public async Task<IActionResult> AddCompany(CompanyDTO company)
         {
 
@@ -35,6 +34,7 @@ namespace ProfileMatching.RecruiterServices.Companies
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Adminitrator")]
         public async Task<IActionResult> DeleteCompany(int id)
         {
             try
@@ -49,6 +49,7 @@ namespace ProfileMatching.RecruiterServices.Companies
         }
 
         [HttpPut]
+        [Authorize(Roles = "Adminitrator,Recruiter")]
         public void UpdateCompany(CompanyDTO company)
         {
             contract.UpdateCompany(company);

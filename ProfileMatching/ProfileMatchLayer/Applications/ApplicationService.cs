@@ -23,14 +23,12 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         private readonly ISaveResults _results;
         private readonly IGetJobPosition _getJobPosition;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IGetCurrentUser _getCurrentUser;
-        public ApplicationService(ApplicationDbContext context, IGetCurrentUser getCurrentUser, UserManager<AppUser> userManager)
+        public ApplicationService(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
             _results = new ResultService(context);
             _getJobPosition = new JobPositionService(context);
             _userManager = userManager;
-            _getCurrentUser = getCurrentUser;
         }
         public async Task<bool> apply(ApplicationDTO application)
         {
