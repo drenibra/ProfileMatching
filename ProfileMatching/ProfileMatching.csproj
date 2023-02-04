@@ -7,13 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\**" />
     <Compile Remove="ProfileMatching\**" />
-    <Content Remove="Migrations\**" />
     <Content Remove="ProfileMatching\**" />
-    <EmbeddedResource Remove="Migrations\**" />
     <EmbeddedResource Remove="ProfileMatching\**" />
-    <None Remove="Migrations\**" />
     <None Remove="ProfileMatching\**" />
   </ItemGroup>
 

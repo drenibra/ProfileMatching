@@ -11,5 +11,6 @@ namespace ProfileMatching.Models
         public List<Document>? Documents { get; set; }
         public Company? Company { get; set; }
         public DateTime? DateStarted { get; set; }
+       // public List<JobPosition>? PublishedJobs { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using ProfileMatching.RecruiterServices.JobPositions;
 
 namespace ProfileMatching.ProfileMatchLayer.Results
 {
-    public class ResultService: IResults,ISaveResults
+    public class ResultService : IResults, ISaveResults
     {
         private readonly ApplicationDbContext _contex;
         public ResultService(ApplicationDbContext _contex) { 
@@ -29,7 +29,7 @@ namespace ProfileMatching.ProfileMatchLayer.Results
 
         public async Task<List<ProfileMatchingResult>> GetResults()
         {
-            return await _contex.ProfileMatchingResults.ToListAsync();            
+        return await _contex.ProfileMatchingResults.ToListAsync();            
         }
     }
 }
