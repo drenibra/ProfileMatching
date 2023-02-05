@@ -38,7 +38,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                 //This returns null
                 //AppUser applicant = _getCurrentUser.GetCurrentUser().Result.Value;
 
-                AppUser applicant = await _userManager.FindByIdAsync(application.applicantId);
+                var applicant = await _userManager.FindByIdAsync(application.applicantId) as Applicant;
 
                 Application a = new Application()
                 {
@@ -66,7 +66,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                 ProfileMatchingResult profileMatchingResult = new ProfileMatchingResult()
                 {
                     ApplicationId = a.Id,
-                    application = a,
+                    Application = a,
                     Result = finalResult
                 };
 

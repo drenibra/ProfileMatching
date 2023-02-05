@@ -6,10 +6,8 @@ namespace ProfileMatching.Models
     {
         public int Id { get; set; }
         public double Result { get; set; }
-        
-        public Application application { get; set; }
-        [ForeignKey("ApplicationId")]
-        public int? ApplicationId { get; set; }
+        public int ApplicationId { get; set; }
+        public Application Application { get; set; }
 
         /*public JobPosition JobPosition { get; set; }
         [ForeignKey("JobPositionId")]

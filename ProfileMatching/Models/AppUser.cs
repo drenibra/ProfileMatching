@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProfileMatching.Models
 {
@@ -7,10 +8,5 @@ namespace ProfileMatching.Models
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string? Skills { get; set; }
-        public List<Document>? Documents { get; set; }
-        public Company? Company { get; set; }
-        public DateTime? DateStarted { get; set; }
-       // public List<JobPosition>? PublishedJobs { get; set; }
     }
 }
