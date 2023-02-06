@@ -8,6 +8,7 @@
         public DateTime ExpiryDate { get; set; }
         public int companyId { get; set; }
         public string  category { get; set; }
+        public string RecruiterId { get; set; }
 
     }
 }

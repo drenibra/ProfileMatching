@@ -32,6 +32,10 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         }
         public async Task<bool> apply(ApplicationDTO application)
         {
+            if(CheckIfExist(application.jobPositionId, application.applicantId))
+            {
+                return false;
+            }
             CalculateMatch calculate = new CalculateMatch();
             try
             {
@@ -42,15 +46,15 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
 
                 Application a = new Application()
                 {
-                    ApplicantId = application.applicantId,
                     date = DateTime.Now,
-                    JobPositionId = application.jobPositionId
+                    JobPositionId = application.jobPositionId,
+                    ApplicantId = application.applicantId
                 };
 
                 JobPosition jobPosition = _getJobPosition.GetJobPositionById(application.jobPositionId);
 
-                /*a.Applicant = applicant;
-                a.JobPosition = jobPosition;*/
+                a.Applicant = applicant;
+                a.JobPosition = jobPosition;
 
                 _context.applications.Add(a);
                 await _context.SaveChangesAsync();
@@ -63,7 +67,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                 double finalResult = calculate.GetPercentage(result, jobRequirements);
 
 
-                ProfileMatchingResult profileMatchingResult = new ProfileMatchingResult()
+                ProfileMatchingResult profileMatchingResult = new()
                 {
                     ApplicationId = a.Id,
                     Application = a,
@@ -79,6 +83,23 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
                 return false;
             }
         }
+        
+        public bool CheckIfExist(int jobId, string applicantId)
+        {
+            var applications = _context.applications.ToList();
+            if(applications.Count == 0)
+            {
+                return false;
+            }
+            foreach(Application a in applications) { 
+                if(a.JobPositionId == jobId && a.ApplicantId.Equals(applicantId))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public async Task<string> deleteApplication(int id)
         {
             var result = await _context.applications.FirstOrDefaultAsync(c => c.Id == id);
