@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProfileMatching.Migrations
 {
-    public partial class init : Migration
+    public partial class New : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -66,6 +66,7 @@ namespace ProfileMatching.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Skills = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CompanyId = table.Column<int>(type: "int", nullable: true),
                     DateStarted = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -89,29 +90,6 @@ namespace ProfileMatching.Migrations
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AspNetUsers_companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "companies",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "jobPositions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SkillSet = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_jobPositions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_jobPositions_companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "companies",
                         principalColumn: "Id");
@@ -212,8 +190,7 @@ namespace ProfileMatching.Migrations
                     SavedPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Size = table.Column<int>(type: "int", nullable: false),
                     Extension = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ApplicantId = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ApplicantId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateIssued = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Subject = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -223,10 +200,43 @@ namespace ProfileMatching.Migrations
                 {
                     table.PrimaryKey("PK_Documents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Documents_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
+                        name: "FK_Documents_AspNetUsers_ApplicantId",
+                        column: x => x.ApplicantId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "jobPositions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SkillSet = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
+                    RecruiterId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_jobPositions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_jobPositions_AspNetUsers_RecruiterId",
+                        column: x => x.RecruiterId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_jobPositions_companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -237,7 +247,7 @@ namespace ProfileMatching.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     JobPositionId = table.Column<int>(type: "int", nullable: false),
-                    ApplicantId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ApplicantId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -246,13 +256,13 @@ namespace ProfileMatching.Migrations
                         name: "FK_applications_AspNetUsers_ApplicantId",
                         column: x => x.ApplicantId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_applications_jobPositions_JobPositionId",
                         column: x => x.JobPositionId,
                         principalTable: "jobPositions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -262,7 +272,7 @@ namespace ProfileMatching.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Result = table.Column<double>(type: "float", nullable: false),
-                    ApplicationId = table.Column<int>(type: "int", nullable: true)
+                    ApplicationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -271,7 +281,8 @@ namespace ProfileMatching.Migrations
                         name: "FK_ProfileMatchingResults_applications_ApplicationId",
                         column: x => x.ApplicationId,
                         principalTable: "applications",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -329,14 +340,19 @@ namespace ProfileMatching.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Documents_AppUserId",
+                name: "IX_Documents_ApplicantId",
                 table: "Documents",
-                column: "AppUserId");
+                column: "ApplicantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_jobPositions_CompanyId",
                 table: "jobPositions",
                 column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_jobPositions_RecruiterId",
+                table: "jobPositions",
+                column: "RecruiterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProfileMatchingResults_ApplicationId",
@@ -374,10 +390,10 @@ namespace ProfileMatching.Migrations
                 name: "applications");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "jobPositions");
 
             migrationBuilder.DropTable(
-                name: "jobPositions");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "companies");

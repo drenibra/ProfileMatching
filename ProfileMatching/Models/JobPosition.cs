@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using static System.Net.Mime.MediaTypeNames;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProfileMatching.Models
 {
@@ -10,19 +11,13 @@ namespace ProfileMatching.Models
         public string SkillSet { get; set; }
         public string Category { get; set; }
 
-        public Company Company { get; set; }
         public int CompanyId { get; set; }
-        [ForeignKey("CompanyId")]
+        public Company Company { get; set; }
 
-
-        public AppUser AppUser { get; set; }
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-
+        public string RecruiterId { get; set; }
+        public Recruiter Recruiter { get; set; }
+        public List<Application> Applications { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ExpiryDate { get; set; }
-
-        List<Application> Applications { get; set; }
-        List<ProfileMatchingResult> ProfileMatchingResults { get; set; } 
     }
 }

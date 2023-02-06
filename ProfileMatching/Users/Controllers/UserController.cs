@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Models;
-using ProfileMatching.Models.DTOs;
-using ProfileMatching.ProfileMatchLayer.Users;
+using ProfileMatching.Users.Interfaces;
 
 [ApiController]
 [Route("api/v1/[controller]")]
@@ -30,6 +29,21 @@ public class UserController : Controller
     {
         return await _userManager.Users.ToListAsync();
     }
+
+    [HttpGet("applicant")]
+    [Authorize(Roles = "Administrator")]
+    public async Task<ActionResult<List<Applicant>>> GetApplicants()
+    {
+        return await _contract.GetApplicants();
+    }
+
+    [HttpGet("applicant/{id}")]
+    public ActionResult<AppUser> GetApplicantById(string id)
+    {
+        return Ok(_contract.getApplicantById(id));
+    }
+
+
     [HttpGet("{id}")]
     [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<AppUser>> GetUserById(string id)

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.RecruiterServices.Companies

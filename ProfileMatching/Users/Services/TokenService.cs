@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProfileMatching.Models;
-using ProfileMatching.ProfileMatchLayer.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace ProfileMatching.Services
+namespace ProfileMatching.Users.Services
 {
     public class TokenService
     {
@@ -28,7 +26,7 @@ namespace ProfileMatching.Services
             };
 
             var roles = _userManager.GetRolesAsync(user).Result;
-            
+
             foreach (var userRole in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, userRole));

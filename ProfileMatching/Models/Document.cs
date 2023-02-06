@@ -9,10 +9,9 @@ namespace ProfileMatching.Models
         public string SavedPath { get; set; }
         public int Size { get; set; }
         public string Extension { get; set; }
-        
         public string ApplicantId { get; set; }
         [ForeignKey("ApplicantId")]
-        public AppUser Applicant { get; set; }
+        public Applicant Applicant { get; set; }
         public virtual void Update()
         {
 

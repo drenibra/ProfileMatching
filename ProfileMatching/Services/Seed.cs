@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProfileMatching.Services
 {
@@ -27,7 +22,6 @@ namespace ProfileMatching.Services
             {
                 await roleManager.CreateAsync(new IdentityRole("Recruiter"));
             }
-
             if (!userManager.Users.Any())
             {
                 var users = new List<AppUser>
@@ -49,12 +43,12 @@ namespace ProfileMatching.Services
                 await context.companies.AddRangeAsync(company);
                 await context.SaveChangesAsync();
             }
-            if (!context.jobPositions.Any())
+/*            if (!context.jobPositions.Any())
             {
-                var jobPosition = new JobPosition { Title = "Software Developer", Description = "Lorem ipsum", SkillSet = "React, .NET", CompanyId = 1, ExpiryDate = DateTime.Parse("02/07/2023"), Category = "Software Developer" };
+                var jobPosition = new JobPosition { Title = "Software Developer", Description = "Lorem ipsum", SkillSet = "React, .NET", CompanyId = 1, *//*RecruiterId = '', *//*ExpiryDate = DateTime.Parse("02/07/2023"), Category = "Software Developer" };
                 await context.jobPositions.AddRangeAsync(jobPosition);
                 await context.SaveChangesAsync();
-            }
+            }*/
         }
     }
 }

@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
-using ProfileMatching.Services;
+using ProfileMatching.Users.Interfaces;
+using ProfileMatching.Users.Services;
 using System.Security.Claims;
 
-namespace ProfileMatching.ProfileMatchLayer.Users
+namespace ProfileMatching.Users.Controllers
 {
     [AllowAnonymous]
     [ApiController]
@@ -56,12 +57,13 @@ namespace ProfileMatching.ProfileMatchLayer.Users
                 return BadRequest("Username taken!");
             }
 
-            var user = new AppUser
+            var user = new Applicant
             {
                 Email = registerDto.Email,
                 Name = registerDto.Name,
                 Surname = registerDto.Surname,
                 UserName = registerDto.Username,
+                Skills = registerDto.Skills
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
@@ -74,6 +76,42 @@ namespace ProfileMatching.ProfileMatchLayer.Users
 
             return BadRequest("Problem registering user!");
         }
+
+        [HttpPost("register/recruiter")]
+        public async Task<ActionResult<UserDTO>> CreateRecruiter(RecruiterDTO recruiter)
+        {
+            if (await _userManager.Users.AnyAsync(x => x.Email == recruiter.Email))
+            {
+                return BadRequest("Email taken!");
+            }
+
+            if (await _userManager.Users.AnyAsync(x => x.UserName == recruiter.Username))
+            {
+                return BadRequest("Username taken!");
+            }
+
+            var user = new Recruiter
+            {
+                Email = recruiter.Email,
+                Name = recruiter.Name,
+                Surname = recruiter.Surname,
+                UserName = recruiter.Username,
+                CompanyId = recruiter.CompanyId,
+                DateStarted = DateTime.Now
+            };
+
+            var result = await _userManager.CreateAsync(user, recruiter.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "Recruiter");
+                return CreateUserObject(user);
+            }
+
+            return BadRequest("Problem registering recruiter!");
+        }
+
+
         [Authorize]
         [HttpGet]
         public async Task<ActionResult<AppUser>> GetCurrentUser()

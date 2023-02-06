@@ -2,7 +2,7 @@
 
 namespace ProfileMatching.Models.DTOs
 {
-    public class RegisterDTO
+    public class RecruiterDTO
     {
         [Required]
         public string Name { get; set; }
@@ -16,6 +16,6 @@ namespace ProfileMatching.Models.DTOs
         public string Password { get; set; }
         [Required]
         public string Username { get; set; }
-        public string Skills { get; set; }
+        public int CompanyId { get; set; }
     }
 }

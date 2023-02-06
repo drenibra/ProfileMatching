@@ -1,5 +1,4 @@
-﻿using System.Linq;
-
+﻿
 namespace ProfileMatching.ProfileMatchLayer.Results.Helpers
 {
     public class CalculateMatch

@@ -4,8 +4,6 @@ using ProfileMatching.Configurations;
 using ProfileMatching.Helpers;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
-using System;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ProfileMatching.RecruiterServices.Companies
 {

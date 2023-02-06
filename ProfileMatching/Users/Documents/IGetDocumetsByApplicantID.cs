@@ -1,7 +1,6 @@
 ﻿using ProfileMatching.Models;
-using System.Net;
 
-namespace ProfileMatching.ProfileMatchLayer.Documents
+namespace ProfileMatching.Users.Documents
 {
     public interface IGetDocumetsByApplicantID
     {

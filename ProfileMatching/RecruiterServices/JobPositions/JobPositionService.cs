@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
 using ProfileMatching.RecruiterServices.Companies;
-using System.Diagnostics.Contracts;
 
 namespace ProfileMatching.RecruiterServices.JobPositions
 {
@@ -35,7 +33,8 @@ namespace ProfileMatching.RecruiterServices.JobPositions
                      SkillSet = jobPosition.SkillSet,
                      ExpiryDate = jobPosition.ExpiryDate,
                      CreatedAt = today,
-                     Category = jobPosition.category
+                     Category = jobPosition.category,
+                     RecruiterId = jobPosition.RecruiterId
                  };
                  _context.jobPositions.Add(job);
                  await _context.SaveChangesAsync();
