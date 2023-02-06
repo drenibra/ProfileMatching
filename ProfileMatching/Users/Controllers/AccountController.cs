@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
-using ProfileMatching.Services;
+using ProfileMatching.Users.Interfaces;
+using ProfileMatching.Users.Services;
 using System.Security.Claims;
 
-namespace ProfileMatching.ProfileMatchLayer.Users
+namespace ProfileMatching.Users.Controllers
 {
     [AllowAnonymous]
     [ApiController]
@@ -96,7 +97,7 @@ namespace ProfileMatching.ProfileMatchLayer.Users
                 Surname = recruiter.Surname,
                 UserName = recruiter.Username,
                 CompanyId = recruiter.CompanyId,
-                DateStarted= DateTime.Now
+                DateStarted = DateTime.Now
             };
 
             var result = await _userManager.CreateAsync(user, recruiter.Password);

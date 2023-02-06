@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
 
-namespace ProfileMatching.ProfileMatchLayer.Users
+namespace ProfileMatching.Users.Interfaces
 {
     public interface IUserService
     {

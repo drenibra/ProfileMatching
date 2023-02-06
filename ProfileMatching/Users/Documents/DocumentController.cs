@@ -1,24 +1,22 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using ProfileMatching.Models;
-using ProfileMatching.Helpers;
 
-namespace ProfileMatching.ProfileMatchLayer.Documents
+namespace ProfileMatching.Users.Documents
 {
     //[EnableCors("appcors")]
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    public class DocumentController:Controller
+    public class DocumentController : Controller
     {
         private IWebHostEnvironment _env;
         //private FileSaver fileSaver;
         private readonly IDocuments contract;
-        public DocumentController(IDocuments contract, IWebHostEnvironment _env) { 
+        public DocumentController(IDocuments contract, IWebHostEnvironment _env)
+        {
             this.contract = contract;
-            this._env= _env;
-            
+            this._env = _env;
+
         }
 
         [HttpGet]
@@ -30,7 +28,7 @@ namespace ProfileMatching.ProfileMatchLayer.Documents
         [HttpPost]
         public async Task<JsonResult> SaveDocuments(List<IFormFile> file, string id)
         {
-           await contract.SaveDocumentsAsync(file, id);
+            await contract.SaveDocumentsAsync(file, id);
             return new JsonResult("Saved!");
         }
         /*

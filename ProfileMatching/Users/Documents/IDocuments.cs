@@ -1,6 +1,6 @@
 ﻿using ProfileMatching.Models;
 
-namespace ProfileMatching.ProfileMatchLayer.Documents
+namespace ProfileMatching.Users.Documents
 {
     public interface IDocuments
     {

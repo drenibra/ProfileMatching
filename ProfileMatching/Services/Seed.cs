@@ -1,13 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
-using ProfileMatching.ProfileMatchLayer.Users;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProfileMatching.Services
 {

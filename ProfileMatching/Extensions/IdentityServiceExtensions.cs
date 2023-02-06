@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
-using ProfileMatching.Services;
+using ProfileMatching.Users.Services;
 using System.Text;
 
 namespace ProfileMatching.Extensions

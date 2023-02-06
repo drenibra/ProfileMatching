@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Models;
-using ProfileMatching.Models.DTOs;
-using ProfileMatching.ProfileMatchLayer.Users;
+using ProfileMatching.Users.Interfaces;
 
 [ApiController]
 [Route("api/v1/[controller]")]

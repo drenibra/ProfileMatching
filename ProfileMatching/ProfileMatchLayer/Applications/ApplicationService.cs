@@ -1,19 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
 using ProfileMatching.ProfileMatchLayer.Results;
 using ProfileMatching.ProfileMatchLayer.Results.Helpers;
-using ProfileMatching.ProfileMatchLayer.Users;
 using ProfileMatching.RecruiterServices.JobPositions;
 using ProfileMatching.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications
 {
@@ -39,9 +31,6 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
             CalculateMatch calculate = new CalculateMatch();
             try
             {
-                //This returns null
-                //AppUser applicant = _getCurrentUser.GetCurrentUser().Result.Value;
-
                 var applicant = await _userManager.FindByIdAsync(application.applicantId) as Applicant;
 
                 Application a = new Application()

@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
 
 namespace ProfileMatching.ProfileMatchLayer.Applications

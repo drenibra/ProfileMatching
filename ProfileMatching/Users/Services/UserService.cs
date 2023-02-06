@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
 using ProfileMatching.Models.DTOs;
-using ProfileMatching.ProfileMatchLayer.Documents;
+using ProfileMatching.Users.Documents;
+using ProfileMatching.Users.Interfaces;
 using System.Reflection.Metadata;
 using System.Security.Claims;
 using System.Xml.Linq;
 
-namespace ProfileMatching.ProfileMatchLayer.Users
+namespace ProfileMatching.Users.Services
 {
     public class UserService : ControllerBase, IUserService
     {
@@ -33,7 +34,7 @@ namespace ProfileMatching.ProfileMatchLayer.Users
 
         public async Task<List<Applicant>> GetApplicants()
         {
-            _docs = new DocumentService(this._dbContext);
+            _docs = new DocumentService(_dbContext);
             var users = await _dbContext.AppUsers.ToListAsync();
             var applicants = users.OfType<Applicant>().ToList();
             foreach (Applicant a in applicants)
@@ -45,64 +46,64 @@ namespace ProfileMatching.ProfileMatchLayer.Users
 
         public Applicant getApplicantById(string id)
         {
-            _docs = new DocumentService(this._dbContext);
+            _docs = new DocumentService(_dbContext);
             var applicant = _dbContext.AppUsers.ToList().OfType<Applicant>().FirstOrDefault(user => user.Id.Equals(id));
             applicant.Documents = _docs.GetDocumentsByApplicantId(id);
             return applicant;
         }
 
         public async Task<ActionResult<AppUser>> GetUserById(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
             {
-                var user = await _userManager.FindByIdAsync(id);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                return user;
+                return NotFound();
             }
-            public async Task<ActionResult<AppUser>> UpdateUser(string id, AppUser user)
-            {
-                // This method is returning concurrency error
-                /*            
-                *      if (id != user.Id)
-                            {
-                                return BadRequest();
-                            }
-                            var result = await _userManager.UpdateAsync(user);
-                            if (!result.Succeeded)
-                            {
-                                return BadRequest(result.Errors);
-                            }
-                            return NoContent();
-                */
+            return user;
+        }
+        public async Task<ActionResult<AppUser>> UpdateUser(string id, AppUser user)
+        {
+            // This method is returning concurrency error
+            /*            
+            *      if (id != user.Id)
+                        {
+                            return BadRequest();
+                        }
+                        var result = await _userManager.UpdateAsync(user);
+                        if (!result.Succeeded)
+                        {
+                            return BadRequest(result.Errors);
+                        }
+                        return NoContent();
+            */
 
 
-        // This method returns null, however works in the AccountController getCurrentUser()
-        // This should be the right way
-        // var dbUser = await _getUser.GetCurrentUser();
+            // This method returns null, however works in the AccountController getCurrentUser()
+            // This should be the right way
+            // var dbUser = await _getUser.GetCurrentUser();
 
-                var dbUser = await _userManager.FindByIdAsync(id);
+            var dbUser = await _userManager.FindByIdAsync(id);
 
-                if (dbUser == null) return BadRequest("User not found!");
+            if (dbUser == null) return BadRequest("User not found!");
 
-                dbUser.Name = IsNullOrEmpty(user.Name) ? dbUser.Name : user.Name;
-                dbUser.Surname = IsNullOrEmpty(user.Surname) ? dbUser.Surname : user.Surname;
-                dbUser.UserName = IsNullOrEmpty(user.UserName) ? dbUser.UserName : user.UserName;
+            dbUser.Name = IsNullOrEmpty(user.Name) ? dbUser.Name : user.Name;
+            dbUser.Surname = IsNullOrEmpty(user.Surname) ? dbUser.Surname : user.Surname;
+            dbUser.UserName = IsNullOrEmpty(user.UserName) ? dbUser.UserName : user.UserName;
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                return Ok(dbUser);
-            }
+            return Ok(dbUser);
+        }
 
-            private bool IsNullOrEmpty(string name)
-            {
-            return name == null || name == String.Empty;
-            }
+        private bool IsNullOrEmpty(string name)
+        {
+            return name == null || name == string.Empty;
+        }
 
-            //[HttpDelete("{id}")]
-            public async Task<IActionResult> DeleteUser(string id)
-            {
-                var user = await _userManager.FindByIdAsync(id);
+        //[HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -113,6 +114,6 @@ namespace ProfileMatching.ProfileMatchLayer.Users
                 return BadRequest(result.Errors);
             }
             return NoContent();
-            }
+        }
     }
 }

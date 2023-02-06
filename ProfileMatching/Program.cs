@@ -8,13 +8,15 @@ using ProfileMatching.Extensions;
 using ProfileMatching.Models;
 using ProfileMatching.RecruiterServices;
 using ProfileMatching.Services;
-using ProfileMatching.ProfileMatchLayer.Users;
 using ProfileMatching.ProfileMatchLayer.Applications;
-using ProfileMatching.ProfileMatchLayer.Documents;
 using ProfileMatching.ProfileMatchLayer.Results;
 using ProfileMatching.RecruiterServices.Companies;
 using ProfileMatching.RecruiterServices.JobPositions;
 using System.Text;
+using ProfileMatching.Users.Documents;
+using ProfileMatching.Users.Controllers;
+using ProfileMatching.Users.Interfaces;
+using ProfileMatching.Users.Services;
 
 internal class Program
 {
