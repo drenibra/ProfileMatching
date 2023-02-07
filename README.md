@@ -1,0 +1,3 @@
+# ProfileMatching
+Profile Matching System "GjejPune" for Software Design course in the Software Engineering Specialization.
+As a team, we have developed GjejPune, a profile matching system for jobs, to solve the problem of processing large numbers of job applications by providing instant results. Built on the .NET 6 framework and React, we have designed the platform with a focus on good software engineering practices and design patterns. Our goal is to provide a seamless experience for both job seekers and employers, allowing for quick and efficient matching of job profiles to job opportunities.
