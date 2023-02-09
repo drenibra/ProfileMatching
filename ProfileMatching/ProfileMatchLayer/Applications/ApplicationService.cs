@@ -24,7 +24,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         }
         public async Task<bool> apply(ApplicationDTO application)
         {
-            if(CheckIfExist(application.jobPositionId, application.applicantId))
+            if(await ifExists(application.jobPositionId, application.applicantId))
             {
                 return false;
             }
@@ -73,20 +73,24 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
             }
         }
         
-        public bool CheckIfExist(int jobId, string applicantId)
+        private async Task<bool> ifExists(int jobId, string applicantId)
         {
-            var applications = _context.applications.ToList();
-            if(applications.Count == 0)
-            {
-                return false;
-            }
-            foreach(Application a in applications) { 
-                if(a.JobPositionId == jobId && a.ApplicantId.Equals(applicantId))
-                {
-                    return true;
-                }
-            }
-            return false;
+            //var applications = _context.applications.ToList();
+
+// builder pattern
+            return await _context.applications.Where(x => x.ApplicantId == applicantId && x.JobPositionId == jobId).AnyAsync();
+//            if(applications.Count == 0)
+//            {
+//                return false;
+//            }
+///*me kqyr a ka aplikant edhe job position prezent ne nje rresht */
+//            foreach(Application a in applications) { 
+//                if(a.JobPositionId == jobId && a.ApplicantId.Equals(applicantId))
+//                {
+//                    return true;
+//                }
+//            }
+//            return false;
         }
 
         public async Task<string> deleteApplication(int id)

@@ -12,7 +12,7 @@ using System.Xml.Linq;
 
 namespace ProfileMatching.Users.Services
 {
-    public class UserService : ControllerBase, IUserService
+    public class UserService : ControllerBase, IUserService, IGetRecruiters
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ApplicationDbContext _dbContext;

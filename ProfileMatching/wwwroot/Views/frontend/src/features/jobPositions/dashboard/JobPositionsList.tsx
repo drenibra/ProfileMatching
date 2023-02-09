@@ -1,8 +1,6 @@
-import { Container, Grid } from '@mui/material';
-import axios from 'axios';
-import path from 'path';
-import { JobPosition } from '../../../app/models/jobPosition';
-import JobPositionCard from './JobPositionCard';
+import { Container, Grid } from "@mui/material";
+import { JobPosition } from "../../../app/models/JobPosition";
+import JobPositionCard from "./JobPositionCard";
 
 interface Props {
   jobPositions: JobPosition[];
@@ -22,6 +20,7 @@ export default function JobPositionsList(props: Props) {
               createdAt={item.createdAt}
               expiryDate={item.expiryDate}
               companyId={item.companyId}
+              company={item.company}
               category={item.category}
             />
           );

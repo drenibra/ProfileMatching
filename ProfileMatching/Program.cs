@@ -17,6 +17,8 @@ using ProfileMatching.Users.Documents;
 using ProfileMatching.Users.Controllers;
 using ProfileMatching.Users.Interfaces;
 using ProfileMatching.Users.Services;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 internal class Program
 {
@@ -41,19 +43,37 @@ internal class Program
         builder.Services.AddDbContext<ApplicationDbContext>(option =>
             option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-        builder.Services.AddCors(option =>
+        /*        builder.Services.AddCors(option =>
+                {
+                    option.AddDefaultPolicy(options =>
+                    {
+                        options.AllowAnyOrigin().AllowAnyMethod().WithHeaders("Access-Control-Allow-Origin");
+                    });
+                    option.AddPolicy(name: MyAllowSpecificOrigins,
+                        policy =>
+                        {
+                            policy.WithOrigins("http://localhost:5048/", "http://localhost:3000/"); // add the allowed origins  
+                        });
+
+                });*/
+        builder.Services.AddCors(options =>
         {
-            option.AddDefaultPolicy(options =>
+            options.AddPolicy("AllowReactClient",
+            builder =>
             {
-                options.AllowAnyOrigin().AllowAnyMethod().WithHeaders("Access-Control-Allow-Origin");
+                builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
             });
         });
+
 
         builder.Services.AddControllersWithViews();
 
         builder.Services.AddScoped<ICompany, CompanyService>();
         builder.Services.AddScoped<IJobPosition, JobPositionService>();
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IGetRecruiters, UserService>();
         builder.Services.AddScoped<IApplicationService, ApplicationService>();
         builder.Services.AddScoped<IDocuments, DocumentService>();
         builder.Services.AddScoped<IResults, ResultService>();
@@ -69,6 +89,11 @@ internal class Program
             options.AddPolicy("RequireAdministratorRole",
                  policy => policy.RequireRole("Administrator"));
         });
+        builder.Services.AddControllersWithViews()
+            .AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        );
+
 
         var app = builder.Build();
 
@@ -82,8 +107,9 @@ internal class Program
                 var context = services.GetRequiredService<ApplicationDbContext>();
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var getRecruiters = services.GetRequiredService<IGetRecruiters>();
                 await context.Database.MigrateAsync();
-                await Seed.SeedData(context, userManager, roleManager);
+                await Seed.SeedData(context, userManager, roleManager, getRecruiters);
             } catch(Exception ex) {
                 var logger = services.GetRequiredService<ILogger<Program>>();
                 logger.LogError(ex, "An error occured during migration");
@@ -98,7 +124,7 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
-        app.UseCors();
+        app.UseCors("AllowReactClient");
 
         app.UseAuthentication();
         app.UseAuthorization();

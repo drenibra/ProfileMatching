@@ -1,33 +1,28 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea, Grid } from '@mui/material';
-import { Container } from '@mui/system';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { JobPosition } from '../models/jobPosition';
+import { JobPosition } from '../models/JobPosition';
 import { useStore } from '../stores/store';
 import JobPositionsList from '../../features/jobPositions/dashboard/JobPositionsList';
+import agent from '../api/agent';
+import LoadingComponent from './LoadingComponent';
 //import {Directory} from '../../../wwwroot/assets/images/';
 
 export default function JobPositionsComponent() {
   const [jobPositions, setJobPositions] = useState<JobPosition[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const { jobPositionStore } = useStore();
   /*   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
  */
   useEffect(() => {
-    axios
-      .get<JobPosition[]>('http://localhost:5048/api/v1/jobposition')
-      .then((response) => {
-        setJobPositions(response.data);
-      });
+    agent.JobPositions.list().then((response) => {
+      console.log(response);
+      setJobPositions(response);
+      setLoading(false);
+    });
   }, []);
 
   var path = 'images/';
-
+  if (loading) return <LoadingComponent open={true} />;
   return <JobPositionsList jobPositions={jobPositions} />;
 }

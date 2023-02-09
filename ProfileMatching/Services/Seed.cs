@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ProfileMatching.Configurations;
 using ProfileMatching.Models;
+using ProfileMatching.Users.Interfaces;
 
 namespace ProfileMatching.Services
 {
     public class Seed
     {
-        public static async Task SeedData(ApplicationDbContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedData(ApplicationDbContext context, 
+            UserManager<AppUser> userManager, 
+            RoleManager<IdentityRole> roleManager,
+            IGetRecruiters getRecruiters)
         {
             if (!roleManager.RoleExistsAsync("Administrator").Result)
             {
@@ -43,12 +47,18 @@ namespace ProfileMatching.Services
                 await context.companies.AddRangeAsync(company);
                 await context.SaveChangesAsync();
             }
-/*            if (!context.jobPositions.Any())
+            if(!getRecruiters.GetRecruiters().Result.Value.Any())
             {
-                var jobPosition = new JobPosition { Title = "Software Developer", Description = "Lorem ipsum", SkillSet = "React, .NET", CompanyId = 1, *//*RecruiterId = '', *//*ExpiryDate = DateTime.Parse("02/07/2023"), Category = "Software Developer" };
+                var recruiter = new Recruiter { Name = "Filan", Surname = "Fisteku", UserName = "filani12", Email = "filani@hotmail.com", CompanyId = 1, DateStarted = DateTime.Now };
+                await userManager.CreateAsync(recruiter, "Pa$$w0rd");
+                await userManager.AddToRoleAsync(recruiter, "Recruiter");
+            }
+            if (!context.jobPositions.Any())
+            {
+                var jobPosition = new JobPosition { Title = "Software Developer", Description = "Lorem ipsum", SkillSet = "React, .NET", CompanyId = 1, RecruiterId = "c60794e9-db20-4370-8863-9a78400733b8", ExpiryDate = DateTime.Parse("03/07/2023"), Category = "Software Developer" };
                 await context.jobPositions.AddRangeAsync(jobPosition);
                 await context.SaveChangesAsync();
-            }*/
+            }
         }
     }
 }
