@@ -4,6 +4,6 @@ namespace ProfileMatching.Users.Documents
 {
     public interface IGetDocumetsByApplicantID
     {
-        List<Document> GetDocumentsByApplicantId(string id);
+        Task<List<Document>> GetDocumentsByApplicantId(string id);
     }
 }

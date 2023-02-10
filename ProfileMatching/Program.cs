@@ -7,7 +7,6 @@ using ProfileMatching.Configurations;
 using ProfileMatching.Extensions;
 using ProfileMatching.Models;
 using ProfileMatching.RecruiterServices;
-using ProfileMatching.Services;
 using ProfileMatching.ProfileMatchLayer.Applications;
 using ProfileMatching.ProfileMatchLayer.Results;
 using ProfileMatching.RecruiterServices.Companies;
@@ -43,19 +42,6 @@ internal class Program
         builder.Services.AddDbContext<ApplicationDbContext>(option =>
             option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-        /*        builder.Services.AddCors(option =>
-                {
-                    option.AddDefaultPolicy(options =>
-                    {
-                        options.AllowAnyOrigin().AllowAnyMethod().WithHeaders("Access-Control-Allow-Origin");
-                    });
-                    option.AddPolicy(name: MyAllowSpecificOrigins,
-                        policy =>
-                        {
-                            policy.WithOrigins("http://localhost:5048/", "http://localhost:3000/"); // add the allowed origins  
-                        });
-
-                });*/
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowReactClient",
@@ -67,7 +53,6 @@ internal class Program
             });
         });
 
-
         builder.Services.AddControllersWithViews();
 
         builder.Services.AddScoped<ICompany, CompanyService>();
@@ -77,7 +62,6 @@ internal class Program
         builder.Services.AddScoped<IApplicationService, ApplicationService>();
         builder.Services.AddScoped<IDocuments, DocumentService>();
         builder.Services.AddScoped<IResults, ResultService>();
-
         builder.Services.AddScoped<IGetCurrentUser, AccountController>();
 
         builder.Services.AddControllersWithViews();

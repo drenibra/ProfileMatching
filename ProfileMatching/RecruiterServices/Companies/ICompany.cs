@@ -7,7 +7,6 @@ namespace ProfileMatching.RecruiterServices.Companies
     public interface ICompany
     {
         Task<List<Company>> GetCompanies();
-        Task<Company> GetCompany(int id);
         Task<Company> AddCompany(CompanyDTO company);
         Task<string> DeleteCompany(int id);
         JsonResult UpdateCompany(CompanyDTO company);

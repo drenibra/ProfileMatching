@@ -5,12 +5,12 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
 {
     public interface IApplicationService
     {
-        Task<bool> apply(ApplicationDTO application);
+        Task<bool> Apply(ApplicationDTO application);
 
-        Task<List<Application>> getApplications();
+        Task<List<Application>> GetApplications();
 
-        Task<Application> getApplicationsByJobId(int id);
+        Task<Application> GetApplicationsByJobId(int id);
 
-        Task<string> deleteApplication(int id);
+        Task<string> DeleteApplication(int id);
     }
 }

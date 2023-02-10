@@ -110,15 +110,13 @@ namespace ProfileMatching.Users.Controllers
 
             return BadRequest("Problem registering recruiter!");
         }
-
-
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<AppUser>> GetCurrentUser()
+        public async Task<ActionResult<UserDTO>> GetCurrentUser()
         {
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
 
-            return user;
+            return CreateUserObject(user);
         }
         [Authorize]
         [HttpGet("roles")]

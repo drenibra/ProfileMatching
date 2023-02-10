@@ -22,7 +22,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
             _getJobPosition = new JobPositionService(context);
             _userManager = userManager;
         }
-        public async Task<bool> apply(ApplicationDTO application)
+        public async Task<bool> Apply(ApplicationDTO application)
         {
             if(await ifExists(application.jobPositionId, application.applicantId))
             {
@@ -75,10 +75,9 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         
         private async Task<bool> ifExists(int jobId, string applicantId)
         {
-            //var applications = _context.applications.ToList();
-
-// builder pattern
             return await _context.applications.Where(x => x.ApplicantId == applicantId && x.JobPositionId == jobId).AnyAsync();
+
+            //var applications = _context.applications.ToList();
 //            if(applications.Count == 0)
 //            {
 //                return false;
@@ -93,7 +92,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
 //            return false;
         }
 
-        public async Task<string> deleteApplication(int id)
+        public async Task<string> DeleteApplication(int id)
         {
             var result = await _context.applications.FirstOrDefaultAsync(c => c.Id == id);
             if (result != null)
@@ -104,11 +103,11 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
             }
             return "Nuk ka rezultate per kete aplikim!";
         }
-        public async Task<List<Application>> getApplications()
+        public async Task<List<Application>> GetApplications()
         {
             return await _context.applications.ToListAsync();
         }
-        public async Task<Application> getApplicationsByJobId(int id)
+        public async Task<Application> GetApplicationsByJobId(int id)
         {
             return await _context.applications.FirstOrDefaultAsync(application => application.JobPosition.Id == id);
         }

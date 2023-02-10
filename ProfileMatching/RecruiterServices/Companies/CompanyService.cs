@@ -16,22 +16,14 @@ namespace ProfileMatching.RecruiterServices.Companies
              this._context = _context;
              this.env = env;
          }
-
          public async Task<List<Company>> GetCompanies()
          {
              return await _context.companies.ToListAsync();
          }
-
-         public async Task<Company> GetCompany(int id)
+         public async Task<Company> GetCompanyById(int id)
          {
              return await _context.companies.FirstOrDefaultAsync(company => company.Id == id);
          }
-
-         public Company GetCompanyById(int? id)
-         {
-             return  _context.companies.FirstOrDefault(company => company.Id == id);
-         }
-
          public async Task<Company> AddCompany(CompanyDTO company)
          {
              string path = "Views/frontend/public/images";
@@ -49,7 +41,6 @@ namespace ProfileMatching.RecruiterServices.Companies
              await fileSaver.FileSaveDocsAsync(company.image, path, fileName);
              return c;
          }
-
          public async Task<string> DeleteCompany(int id)
          {
              var result = await _context.companies.FirstOrDefaultAsync(c => c.Id == id);
@@ -61,7 +52,6 @@ namespace ProfileMatching.RecruiterServices.Companies
              }
              return "Compania nuk u gjend!";
          }
-
          public JsonResult UpdateCompany(CompanyDTO company)
          {
              Company c = new Company()
@@ -74,14 +64,9 @@ namespace ProfileMatching.RecruiterServices.Companies
              return new JsonResult("Compania u perditsua me sukses!");
          }
 
-         public bool IsExistence(int id)
+         public async Task<bool> IsExistence(int id)
          {
-             var result = _context.companies.FirstOrDefault(c => c.Id == id);
-             if (result != null)
-             {
-                 return true;
-             }
-             return false;
+            return await _context.companies.Where(c => c.Id == id).AnyAsync();
          }
     }
 }

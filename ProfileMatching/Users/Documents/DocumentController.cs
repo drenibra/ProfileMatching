@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace ProfileMatching.Users.Documents
 {
     //[EnableCors("appcors")]
+    [AllowAnonymous]
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    
     public class DocumentController : Controller
     {
         private IWebHostEnvironment _env;
@@ -16,7 +17,6 @@ namespace ProfileMatching.Users.Documents
         {
             this.contract = contract;
             this._env = _env;
-
         }
 
         [HttpGet]

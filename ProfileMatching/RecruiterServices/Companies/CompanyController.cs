@@ -19,11 +19,11 @@ namespace ProfileMatching.RecruiterServices.Companies
         {
             return Ok(await contract.GetCompanies());
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCompany(int id)
+/*        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCompanyById(int id)
         {
-            return Ok(await contract.GetCompany(id));
-        }
+            return Ok(await contract.GetCompanyById(id));
+        }*/
         [HttpPost]
         [Authorize(Roles = "Adminitrator")]
         public async Task<IActionResult> AddCompany(CompanyDTO company)
@@ -31,7 +31,6 @@ namespace ProfileMatching.RecruiterServices.Companies
 
             return Ok(await contract.AddCompany(company));
         }
-
         [HttpDelete("{id}")]
         [Authorize(Roles = "Adminitrator")]
         public async Task<IActionResult> DeleteCompany(int id)
@@ -46,7 +45,6 @@ namespace ProfileMatching.RecruiterServices.Companies
                     "Error deleting data");
             }
         }
-
         [HttpPut]
         [Authorize(Roles = "Adminitrator,Recruiter")]
         public void UpdateCompany(CompanyDTO company)

@@ -11,6 +11,6 @@ namespace ProfileMatching.Users.Interfaces
         Task<ActionResult<AppUser>> UpdateUser(string id, AppUser user);
         Task<IActionResult> DeleteUser(string id);
         Task<List<Applicant>> GetApplicants();
-        Applicant getApplicantById(string id);
+        Task<Applicant> GetApplicantById(string id);
     }
 }

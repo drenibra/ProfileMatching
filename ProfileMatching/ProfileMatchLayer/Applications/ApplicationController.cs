@@ -20,21 +20,21 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         [Authorize(Roles = "Recruiter, Administrator")]
         public async Task<IActionResult> GetApplications()
         {
-            return Ok(await _contract.getApplications());
+            return Ok(await _contract.GetApplications());
         }
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Recruiter, Administrator")]
-        public async Task<IActionResult> getApplicationsByJobId(int id)
+        public async Task<IActionResult> GetApplicationsByJobId(int id)
         {
-            return Ok(await _contract.getApplicationsByJobId(id));
+            return Ok(await _contract.GetApplicationsByJobId(id));
         }
 
         [HttpPost]
         [Authorize(Roles = "Applicant")]
         public async Task<IActionResult> Apply(ApplicationDTO application)
         {
-            return Ok(await _contract.apply(application));
+            return Ok(await _contract.Apply(application));
         }
 
         [HttpDelete("{id}")]
@@ -43,7 +43,7 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         {
             try
             {
-                return Ok(await _contract.deleteApplication(id));
+                return Ok(await _contract.DeleteApplication(id));
             }
             catch (Exception)
             {

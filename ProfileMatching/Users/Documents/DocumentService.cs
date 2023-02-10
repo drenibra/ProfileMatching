@@ -59,7 +59,7 @@ namespace ProfileMatching.Users.Documents
             return await context.Documents.ToListAsync();
         }
 
-        public List<Document> GetDocumentsByApplicantId(string id)
+/*        public List<Document> GetDocumentsByApplicantId(string id)
         {
             List<Document> documents = new List<Document>();
             foreach (Document d in context.Documents)
@@ -70,6 +70,10 @@ namespace ProfileMatching.Users.Documents
                 }
             }
             return documents;
+        }*/
+        public async Task<List<Document>> GetDocumentsByApplicantId(string id)
+        {
+            return await context.Documents.Where(d => d.ApplicantId == id).ToListAsync();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace ProfileMatching.RecruiterServices.JobPositions
         [HttpGet]
         public async Task<IActionResult> GetJobPositions()
         {
-            return Ok(await contract.GetJobPositions(this.env));
+            return Ok(await contract.GetJobPositions());
         }
 
         [HttpPost]

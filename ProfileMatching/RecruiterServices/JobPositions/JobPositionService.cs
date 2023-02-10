@@ -21,7 +21,7 @@ namespace ProfileMatching.RecruiterServices.JobPositions
          {
              _env = env;
              company = new CompanyService(this._context, this._env);
-             if (company.IsExistence(jobPosition.companyId))
+             if (await company.IsExistence(jobPosition.companyId))
              {
                  DateTime today = DateTime.Now;
 
@@ -55,31 +55,12 @@ namespace ProfileMatching.RecruiterServices.JobPositions
              return "Pozita e punes nuk u gjend!";
          }
 
-         public async Task<List<JobPosition>> GetJobPositions(IWebHostEnvironment env)
+         public async Task<List<JobPosition>> GetJobPositions()
          {
-             _env = env;
-             company = new CompanyService(this._context, this._env);
-             List<JobPosition> result = new List<JobPosition>();
-             var jobs = await _context.jobPositions.ToListAsync();
-             try
-             {
-                 foreach (JobPosition job in jobs)
-                 {
-                     if (job.ExpiryDate.CompareTo(DateTime.Now) == -1)
-                     {
-                         continue;
-                     }
-                     else
-                     {
-                         job.Company = company.GetCompanyById(job.CompanyId);
-                         result.Add(job);
-                     }
-                 }
-             }catch(Exception ex)
-             {
-                 string message = ex.Message;
-             }
-             return result;
+            return await _context.jobPositions
+                .Where(job => job.ExpiryDate >= DateTime.Now)
+                .Include("Company")
+                .ToListAsync();
          }
 
          public JobPosition GetJobPositionById(int id)

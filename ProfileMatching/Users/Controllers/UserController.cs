@@ -36,14 +36,11 @@ public class UserController : Controller
     {
         return await _contract.GetApplicants();
     }
-
     [HttpGet("applicant/{id}")]
     public ActionResult<AppUser> GetApplicantById(string id)
     {
-        return Ok(_contract.getApplicantById(id));
+        return Ok(_contract.GetApplicantById(id));
     }
-
-
     [HttpGet("{id}")]
     [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<AppUser>> GetUserById(string id)

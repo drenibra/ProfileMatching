@@ -13,7 +13,7 @@
         {
             string route = Path.Combine(_env.WebRootPath, filePath);
 
-            //nese directory nuk ekziston, e shton nja te re
+            // nese directory nuk ekziston, e shton nja te re
             if (!Directory.Exists(route))
             {
                 Directory.CreateDirectory(route);

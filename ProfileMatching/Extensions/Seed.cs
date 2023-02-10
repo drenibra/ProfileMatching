@@ -3,12 +3,12 @@ using ProfileMatching.Configurations;
 using ProfileMatching.Models;
 using ProfileMatching.Users.Interfaces;
 
-namespace ProfileMatching.Services
+namespace ProfileMatching.Extensions
 {
     public class Seed
     {
-        public static async Task SeedData(ApplicationDbContext context, 
-            UserManager<AppUser> userManager, 
+        public static async Task SeedData(ApplicationDbContext context,
+            UserManager<AppUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IGetRecruiters getRecruiters)
         {
@@ -47,7 +47,7 @@ namespace ProfileMatching.Services
                 await context.companies.AddRangeAsync(company);
                 await context.SaveChangesAsync();
             }
-            if(!getRecruiters.GetRecruiters().Result.Value.Any())
+            if (!getRecruiters.GetRecruiters().Result.Value.Any())
             {
                 var recruiter = new Recruiter { Name = "Filan", Surname = "Fisteku", UserName = "filani12", Email = "filani@hotmail.com", CompanyId = 1, DateStarted = DateTime.Now };
                 await userManager.CreateAsync(recruiter, "Pa$$w0rd");

@@ -4,7 +4,7 @@ namespace ProfileMatching.RecruiterServices.Companies
 {
     public interface ICompanyExistence
     {
-        bool IsExistence(int id);
-        Company GetCompanyById(int? companyId);
+        Task<bool> IsExistence(int id);
+        Task<Company> GetCompanyById(int companyId);
     }
 }

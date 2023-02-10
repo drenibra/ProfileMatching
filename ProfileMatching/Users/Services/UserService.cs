@@ -31,27 +31,27 @@ namespace ProfileMatching.Users.Services
             var recruiters = await _userManager.Users.ToListAsync();
             return recruiters.OfType<Recruiter>().ToList();
         }
-
         public async Task<List<Applicant>> GetApplicants()
         {
-            _docs = new DocumentService(_dbContext);
-            var users = await _dbContext.AppUsers.ToListAsync();
-            var applicants = users.OfType<Applicant>().ToList();
-            foreach (Applicant a in applicants)
-            {
-                a.Documents = _docs.GetDocumentsByApplicantId(a.Id);
-            }
-            return applicants;
+            return await _dbContext.AppUsers
+                .OfType<Applicant>()
+                .Include(a => a.Documents)
+                .ToListAsync();
         }
-
-        public Applicant getApplicantById(string id)
+        public async Task<Applicant> GetApplicantById(string id)
         {
-            _docs = new DocumentService(_dbContext);
-            var applicant = _dbContext.AppUsers.ToList().OfType<Applicant>().FirstOrDefault(user => user.Id.Equals(id));
-            applicant.Documents = _docs.GetDocumentsByApplicantId(id);
+            var applicant = await _dbContext.AppUsers
+                .OfType<Applicant>()
+                .FirstOrDefaultAsync(user => user.Id.Equals(id));
+
+            if (applicant != null)
+            {
+                applicant.Documents = await _dbContext.Documents
+                    .Where(d => d.ApplicantId == id)
+                    .ToListAsync();
+            }
             return applicant;
         }
-
         public async Task<ActionResult<AppUser>> GetUserById(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
