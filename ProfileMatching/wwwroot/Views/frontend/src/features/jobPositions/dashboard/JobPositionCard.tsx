@@ -8,20 +8,26 @@ interface Props {
   handleApply: (arg0: number) => void;
   setApplied: (arg0: boolean) => void;
   applied: boolean;
+  path: string;
 }
 
-export default function JobPositionCard({ jobPosition, handleApply, setApplied, applied }: Props) {
+export default function JobPositionCard({ jobPosition, handleApply, setApplied, applied, path }: Props) {
   return (
     <Grid item xs={4}>
       <Card key={jobPosition.id}>
         <CardActionArea>
-          <CardMedia component="img" height="200" image={jobPosition.company.logo} sx={{ objectFit: 'contain' }} />
+          <CardMedia
+            component="img"
+            height="200"
+            image={path + jobPosition.company.logo}
+            sx={{ objectFit: 'contain' }}
+          />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
               {jobPosition.title}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Description: {jobPosition.description}
+              {jobPosition.company.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Requirements: {jobPosition.skillSet}

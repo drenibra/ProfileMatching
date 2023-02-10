@@ -43,7 +43,13 @@ export default observer(function JobPositionsList() {
       <Grid container spacing={12}>
         {jobPositions.map((item) => {
           return (
-            <JobPositionCard applied={applied} setApplied={setApplied} jobPosition={item} handleApply={handleApply} />
+            <JobPositionCard
+              applied={applied}
+              setApplied={setApplied}
+              path={path}
+              jobPosition={item}
+              handleApply={handleApply}
+            />
           );
         })}
       </Grid>

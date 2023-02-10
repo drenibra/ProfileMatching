@@ -76,7 +76,7 @@ namespace ProfileMatching.Users.Controllers
 
             return BadRequest("Problem registering user!");
         }
-
+        [Authorize(Roles = "Administrator")]
         [HttpPost("register/recruiter")]
         public async Task<ActionResult<UserDTO>> CreateRecruiter(RecruiterDTO recruiter)
         {
