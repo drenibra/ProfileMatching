@@ -3,16 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './app/layout/App';
 import reportWebVitals from './reportWebVitals';
-import LoginForm from './features/users/LoginForm';
-import JobPositionsComponent from './app/layout/JobPositionsComponent';
-import LandingPage from './app/layout/LandinPage';
-import ResponsiveAppBar from './app/layout/ResponsiveAppBar';
-import RegisterForm from './features/users/RegisterForm';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    {/* <ResponsiveAppBar /> */}
     <App />
   </React.StrictMode>
 );

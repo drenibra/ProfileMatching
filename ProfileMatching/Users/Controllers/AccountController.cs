@@ -119,6 +119,13 @@ namespace ProfileMatching.Users.Controllers
             return CreateUserObject(user);
         }
         [Authorize]
+        [HttpGet("currentId")]
+        public async Task<ActionResult<string>> GetCurrentUserId()
+        {
+            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            return Ok(user.Id);
+        }
+        [Authorize]
         [HttpGet("roles")]
         public async Task<IList<string>> GetRoles()
         {

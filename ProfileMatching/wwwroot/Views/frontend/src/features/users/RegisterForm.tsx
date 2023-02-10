@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useStore } from '../../app/stores/store';
 import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 
 function Copyright(props: any) {
   return (
@@ -30,7 +31,7 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default function RegisterForm() {
+export default observer(function RegisterForm(props: any) {
   const [errorMsg, setErrorMsg] = useState(false);
   const { userStore } = useStore();
 
@@ -164,7 +165,7 @@ export default function RegisterForm() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" onClick={() => props.setPage('login')}>
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -175,4 +176,4 @@ export default function RegisterForm() {
       </Container>
     </ThemeProvider>
   );
-}
+});

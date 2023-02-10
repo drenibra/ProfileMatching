@@ -1,25 +1,25 @@
-import JobPositionsComponent from './JobPositionsComponent';
+import JobPositions from './JobPositions';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoginForm from '../../features/users/LoginForm';
 import LandingPage from './LandinPage';
 import RegisterForm from '../../features/users/RegisterForm';
 import ResponsiveAppBar from './ResponsiveAppBar';
 import { useStore } from '../stores/store';
-import { useEffect } from 'react';
-
-const logo = require('./../../logo.svg') as string;
+import { useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 
 const routes = [
-  { path: '/', element: LandingPage },
-  { path: '/jobpositions', element: JobPositionsComponent },
-  { path: '*', element: LandingPage },
+  { path: '/', element: LoginForm },
+  { path: '/jobpositions', element: JobPositions },
+  { path: '*', element: LoginForm },
   { path: '/home', element: LandingPage },
   { path: '/login', element: LoginForm },
   { path: '/signup', element: RegisterForm },
 ];
 
-function App() {
+export default observer(function App() {
   const { commonStore, userStore } = useStore();
+  const [page, setPage] = useState('login');
 
   useEffect(() => {
     if (commonStore.token) {
@@ -29,18 +29,6 @@ function App() {
     }
   }, [commonStore, userStore]);
 
-  /*   return userStore.isLoggedIn ? (
-    <BrowserRouter>
-      <ResponsiveAppBar />
-      <Routes>
-        {routes.map((route) => (
-          <Route key={route.path} path={route.path} element={<route.element />} />
-        ))}
-      </Routes>
-    </BrowserRouter>
-  ) : (
-    <LoginForm />
-  ); */
   return (
     <BrowserRouter>
       {userStore.isLoggedIn ? (
@@ -52,11 +40,11 @@ function App() {
             ))}
           </Routes>
         </>
+      ) : page === 'login' ? (
+        <LoginForm setPage={setPage} />
       ) : (
-        <LoginForm />
+        <RegisterForm setPage={setPage} />
       )}
     </BrowserRouter>
   );
-}
-
-export default App;
+});

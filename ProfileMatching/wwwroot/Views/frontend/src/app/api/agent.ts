@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
+import { ApplicationDto } from '../models/ApplicationDto';
 import { JobPosition } from '../models/JobPosition';
 import { User, UserFormValues, UserRegister } from '../models/User';
+import CommonStore from '../stores/CommonStore';
 import { store } from '../stores/store';
 
 const sleep = (delay: number) => {
@@ -11,11 +13,16 @@ const sleep = (delay: number) => {
 
 axios.defaults.baseURL = 'http://localhost:5048/api/v1';
 
-axios.interceptors.request.use((config) => {
-  const token = store.commonStore.token;
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+axios.interceptors.request.use(
+  (config) => {
+    const token = store.commonStore.token;
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 axios.interceptors.response.use(async (response) => {
   try {
@@ -44,11 +51,18 @@ const Account = {
   current: () => requests.get<User>('/account'),
   login: (user: UserFormValues) => requests.post<UserFormValues>('/account/login', user),
   register: (user: UserRegister) => requests.post<UserRegister>('/account/register', user),
+  currentId: () => requests.get<string>('/account/currentId'),
+  roles: () => requests.get<string[]>('/account/roles'),
+};
+
+const Application = {
+  apply: (app: ApplicationDto) => requests.post<ApplicationDto>('/application', app),
 };
 
 const agent = {
   JobPositions,
   Account,
+  Application,
 };
 
 export default agent;

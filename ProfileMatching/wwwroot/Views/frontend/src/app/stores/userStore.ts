@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 import agent from '../api/agent';
+import { ApplicationDto } from '../models/ApplicationDto';
 import { User, UserFormValues, UserRegister } from '../models/User';
 import { store } from './store';
 
@@ -29,7 +30,6 @@ export default class UserStore {
       runInAction(() => (this.user = user));
       this.removeError();
       console.log(user);
-      /* navigate('/landingpage'); */
     } catch (error) {
       console.log('Invalid credentials');
       this.triggerError();
@@ -42,7 +42,6 @@ export default class UserStore {
       const user = await agent.Account.register(creds);
       store.commonStore.setToken(user.token);
       runInAction(() => (this.user = user));
-      /* store.modalStore.closeModal(); */
     } catch (error) {
       throw error;
     }
@@ -52,6 +51,7 @@ export default class UserStore {
     store.commonStore.setToken(null);
     window.localStorage.removeItem('jwt');
     this.user = null;
+    window.location.replace('/login');
   };
 
   getUser = async () => {
@@ -63,6 +63,36 @@ export default class UserStore {
       console.log(error);
     }
   };
+
+  getCurrentUserId = async (): Promise<string> => {
+    try {
+      const userId = await agent.Account.currentId();
+      return userId;
+    } catch (error) {
+      console.log(error);
+      return '';
+    }
+  };
+
+  apply = async (creds: ApplicationDto): Promise<boolean> => {
+    try {
+      const application = await agent.Application.apply(creds);
+      return application;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
+  /*   getRoles = async (): Promise<string[]> => {
+    try {
+      const roles = await agent.Account.roles;
+      return roles;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }; */
 
   triggerError = () => {
     this.error = true;

@@ -33,7 +33,7 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default observer(function LoginForm() {
+export default observer(function LoginForm(props: any) {
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState(false);
   const { userStore } = useStore();
@@ -63,7 +63,6 @@ export default observer(function LoginForm() {
       console.log(errorMsg);
     }
   };
-  if (userStore.isLoggedIn) return <Alert severity="error">User is already logged in!</Alert>;
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -117,7 +116,7 @@ export default observer(function LoginForm() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" onClick={() => props.setPage('register')}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
