@@ -8,9 +8,5 @@ namespace ProfileMatching.Models
         public double Result { get; set; }
         public int ApplicationId { get; set; }
         public Application Application { get; set; }
-
-        /*public JobPosition JobPosition { get; set; }
-        [ForeignKey("JobPositionId")]
-        public int? JobPositionId { get; set; }*/
     }
 }

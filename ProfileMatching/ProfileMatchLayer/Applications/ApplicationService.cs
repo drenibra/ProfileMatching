@@ -24,26 +24,24 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         }
         public async Task<bool> Apply(ApplicationDTO application)
         {
-            if(await ifExists(application.jobPositionId, application.applicantId))
+            if (await ifExists(application.jobPositionId, application.applicantId))
             {
                 return false;
             }
             CalculateMatch calculate = new CalculateMatch();
             try
             {
-                var applicant = await _userManager.FindByIdAsync(application.applicantId) as Applicant;
+                Applicant applicant = await _userManager.FindByIdAsync(application.applicantId) as Applicant;
+                JobPosition jobPosition = await _getJobPosition.GetJobPositionById(application.jobPositionId);
 
                 Application a = new Application()
                 {
                     date = DateTime.Now,
                     JobPositionId = application.jobPositionId,
-                    ApplicantId = application.applicantId
+                    ApplicantId = application.applicantId,
+                    Applicant = applicant,
+                    JobPosition = jobPosition
                 };
-
-                JobPosition jobPosition = _getJobPosition.GetJobPositionById(application.jobPositionId);
-
-                a.Applicant = applicant;
-                a.JobPosition = jobPosition;
 
                 _context.applications.Add(a);
                 await _context.SaveChangesAsync();

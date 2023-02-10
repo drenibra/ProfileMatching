@@ -4,6 +4,6 @@ namespace ProfileMatching.RecruiterServices.JobPositions
 {
     public interface IGetJobPosition
     {
-        JobPosition GetJobPositionById(int id);
+        Task<JobPosition> GetJobPositionById(int id);
     }
 }

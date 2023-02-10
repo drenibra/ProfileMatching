@@ -63,9 +63,9 @@ namespace ProfileMatching.RecruiterServices.JobPositions
                 .ToListAsync();
          }
 
-         public JobPosition GetJobPositionById(int id)
+         public async Task<JobPosition> GetJobPositionById(int id)
          {
-             return _context.jobPositions.FirstOrDefault(JobPosition => JobPosition.Id == id);
+             return await _context.jobPositions.FirstOrDefaultAsync(JobPosition => JobPosition.Id == id);
          }
 
          public JsonResult UpdateJobPosition(JobPositionDTO jobPosition)

@@ -10,7 +10,6 @@ namespace ProfileMatching.ProfileMatchLayer.Results
         public ResultService(ApplicationDbContext _contex) { 
             this._contex = _contex;
         }
-
         public async Task<bool> AddResult(ProfileMatchingResult Result)
         {
             try
@@ -23,7 +22,6 @@ namespace ProfileMatching.ProfileMatchLayer.Results
                 return false;
             }
         }
-
         public async Task<List<ProfileMatchingResult>> GetResults()
         {
         return await _contex.ProfileMatchingResults.ToListAsync();            
