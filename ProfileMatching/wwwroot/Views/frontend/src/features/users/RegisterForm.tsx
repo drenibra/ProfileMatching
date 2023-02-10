@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useStore } from '../../app/stores/store';
+import { useState } from 'react';
 
 function Copyright(props: any) {
   return (
@@ -28,14 +30,38 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default function SignUpForm() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+export default function RegisterForm() {
+  const [errorMsg, setErrorMsg] = useState(false);
+  const { userStore } = useStore();
+
+  const initialValues = {
+    Name: '',
+    Surname: '',
+    Email: '',
+    Password: '',
+    UserName: '',
+    Skills: '',
+  };
+
+  const [formValues, setFormValues] = useState(initialValues);
+
+  const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
     });
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    try {
+      event.preventDefault();
+      userStore.register(formValues);
+      console.log(formValues);
+    } catch (error) {
+      setErrorMsg(true);
+      console.log(errorMsg);
+    }
   };
 
   return (
@@ -60,8 +86,9 @@ export default function SignUpForm() {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  onChange={handleTextFieldChange}
                   autoComplete="given-name"
-                  name="firstName"
+                  name="Name"
                   required
                   fullWidth
                   id="firstName"
@@ -71,26 +98,58 @@ export default function SignUpForm() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  onChange={handleTextFieldChange}
                   required
                   fullWidth
                   id="lastName"
                   label="Last Name"
-                  name="lastName"
+                  name="Surname"
                   autoComplete="family-name"
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" />
+                <TextField
+                  onChange={handleTextFieldChange}
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="UserName"
+                  autoComplete="username"
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleTextFieldChange}
                   required
                   fullWidth
-                  name="password"
+                  id="email"
+                  label="Email Address"
+                  name="Email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  onChange={handleTextFieldChange}
+                  required
+                  fullWidth
+                  name="Password"
                   label="Password"
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  onChange={handleTextFieldChange}
+                  required
+                  fullWidth
+                  name="Skills"
+                  label="Skills (separate by comma)"
+                  id="skills"
+                  autoComplete="skills"
                 />
               </Grid>
               <Grid item xs={12}>

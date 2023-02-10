@@ -16,6 +16,7 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from '../../app/stores/store';
 import { useState } from 'react';
 import { Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
@@ -33,6 +34,7 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default observer(function LoginForm() {
+  const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState(false);
   const { userStore } = useStore();
 
@@ -52,27 +54,16 @@ export default observer(function LoginForm() {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    /*     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const userFormValues = {
-      email: data.get('email'),
-      password: data.get('password'),
-    };
-    userStore.login({
-      email: data.get('email'),
-      password: data.get('password'),
-    }); */
     try {
       event.preventDefault();
       userStore.login(formValues);
+      navigate('/jobpositions');
     } catch (error) {
       setErrorMsg(true);
       console.log(errorMsg);
     }
   };
-  {
-    if (userStore.isLoggedIn) return <Alert severity="error">User is already logged in!</Alert>;
-  }
+  if (userStore.isLoggedIn) return <Alert severity="error">User is already logged in!</Alert>;
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">

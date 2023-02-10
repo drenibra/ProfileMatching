@@ -7,7 +7,7 @@ import LoginForm from './features/users/LoginForm';
 import JobPositionsComponent from './app/layout/JobPositionsComponent';
 import LandingPage from './app/layout/LandinPage';
 import ResponsiveAppBar from './app/layout/ResponsiveAppBar';
-import SignUpForm from './features/users/SignUpForm';
+import RegisterForm from './features/users/RegisterForm';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

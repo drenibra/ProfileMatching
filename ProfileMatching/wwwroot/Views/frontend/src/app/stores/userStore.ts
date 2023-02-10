@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 import agent from '../api/agent';
-import { User, UserFormValues } from '../models/User';
+import { User, UserFormValues, UserRegister } from '../models/User';
 import { store } from './store';
 
 export default class UserStore {
@@ -27,7 +27,6 @@ export default class UserStore {
       const user = await agent.Account.login(creds);
       store.commonStore.setToken(user.token);
       runInAction(() => (this.user = user));
-      /* store.modalStore.closeModal(); */
       this.removeError();
       console.log(user);
       /* navigate('/landingpage'); */
@@ -38,7 +37,7 @@ export default class UserStore {
     }
   };
 
-  register = async (creds: UserFormValues) => {
+  register = async (creds: UserRegister) => {
     try {
       const user = await agent.Account.register(creds);
       store.commonStore.setToken(user.token);

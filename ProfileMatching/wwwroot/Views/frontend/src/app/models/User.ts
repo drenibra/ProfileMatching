@@ -4,6 +4,15 @@ export interface User {
   token: string;
 }
 
+export interface UserRegister {
+  Name: string;
+  Surname: string;
+  UserName: string;
+  Email: string;
+  Password: string;
+  Skills: string;
+}
+
 export interface UserFormValues {
   email: string;
   password: string;

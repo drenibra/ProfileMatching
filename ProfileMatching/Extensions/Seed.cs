@@ -55,7 +55,8 @@ namespace ProfileMatching.Extensions
             }
             if (!context.jobPositions.Any())
             {
-                var jobPosition = new JobPosition { Title = "Software Developer", Description = "Lorem ipsum", SkillSet = "React, .NET", CompanyId = 1, RecruiterId = "c60794e9-db20-4370-8863-9a78400733b8", ExpiryDate = DateTime.Parse("03/07/2023"), Category = "Software Developer" };
+                var recruiter = await userManager.FindByEmailAsync("filani@hotmail.com") as Recruiter;
+                var jobPosition = new JobPosition { Title = "Software Developer", Description = "Lorem ipsum", SkillSet = "React, .NET", CompanyId = 1, RecruiterId = recruiter.Id, Recruiter = recruiter, ExpiryDate = DateTime.Parse("03/07/2023"), Category = "Software Developer" };
                 await context.jobPositions.AddRangeAsync(jobPosition);
                 await context.SaveChangesAsync();
             }
