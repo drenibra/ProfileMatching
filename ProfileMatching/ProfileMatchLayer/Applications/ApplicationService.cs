@@ -12,18 +12,18 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
     public class ApplicationService : IApplicationService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ISaveResults _results;
-        private readonly IGetJobPosition _getJobPosition;
+        private ISaveResults _results;
+        private IGetJobPosition _getJobPosition;
         private readonly UserManager<AppUser> _userManager;
         public ApplicationService(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
-            _results = new ResultService(context);
-            _getJobPosition = new JobPositionService(context);
             _userManager = userManager;
         }
         public async Task<bool> Apply(ApplicationDTO application)
         {
+            _results = new ResultService(_context);
+            _getJobPosition = new JobPositionService(_context);
             if (await ifExists(application.jobPositionId, application.applicantId))
             {
                 return false;
