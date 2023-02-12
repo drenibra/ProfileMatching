@@ -1,9 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 import { ApplicationDto } from '../models/ApplicationDto';
 import { JobPosition } from '../models/JobPosition';
+import { ApplicationsByApplicant } from '../models/ApplicationsByApplicant';
 import { User, UserFormValues, UserRegister } from '../models/User';
 import CommonStore from '../stores/CommonStore';
 import { store } from '../stores/store';
+import { Result } from '../models/Result';
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -52,17 +54,24 @@ const Account = {
   login: (user: UserFormValues) => requests.post<UserFormValues>('/account/login', user),
   register: (user: UserRegister) => requests.post<UserRegister>('/account/register', user),
   currentId: () => requests.get<string>('/account/currentId'),
-  roles: () => requests.get<string[]>('/account/roles'),
+  roles: () => requests.get<Array<string>>('/account/roles'),
 };
 
 const Application = {
   apply: (app: ApplicationDto) => requests.post<ApplicationDto>('/application', app),
+  listByApplicant: (applicantId: string) =>
+    requests.get<ApplicationsByApplicant[]>(`/application/applicant/${applicantId}`),
+};
+
+const Results = {
+  list: () => requests.get<Result[]>('/result'),
 };
 
 const agent = {
   JobPositions,
   Account,
   Application,
+  Results,
 };
 
 export default agent;

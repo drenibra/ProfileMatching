@@ -18,3 +18,8 @@ export interface UserFormValues {
   password: string;
   username?: string;
 }
+
+export interface AppUser {
+  name: string;
+  surname: string;
+}

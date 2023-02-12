@@ -17,26 +17,30 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         }
 
         [HttpGet]
-        [Authorize(Roles = "Recruiter, Administrator")]
+        [Authorize(Roles = "Recruiter,Administrator")]
         public async Task<IActionResult> GetApplications()
         {
             return Ok(await _contract.GetApplications());
         }
-
         [HttpGet("{id}")]
-        [Authorize(Roles = "Recruiter, Administrator")]
+        [Authorize(Roles = "Recruiter,Administrator")]
         public async Task<IActionResult> GetApplicationsByJobId(int id)
         {
             return Ok(await _contract.GetApplicationsByJobId(id));
+        
         }
-
+        [HttpGet("applicant/{id}")]
+        [Authorize(Roles = "Applicant,Recruiter,Administrator")]
+        public async Task<IActionResult> GetApplicationsByApplicantId(string id)
+        {
+            return Ok(await _contract.GetApplicationsByApplicantId(id));
+        }
         [HttpPost]
         [Authorize(Roles = "Applicant")]
         public async Task<IActionResult> Apply(ApplicationDTO application)
         {
             return Ok(await _contract.Apply(application));
         }
-
         [HttpDelete("{id}")]
         [Authorize(Roles = "Recruiter, Administrator")]
         public async Task<IActionResult> DeleteApplication(int id)

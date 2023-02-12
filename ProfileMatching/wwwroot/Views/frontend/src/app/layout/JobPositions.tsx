@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import agent from '../api/agent';
 import { JobPosition } from '../models/JobPosition';
@@ -11,11 +11,7 @@ export default observer(function JobPositionsList() {
   const { userStore } = useStore();
   const [jobPositions, setJobPositions] = useState<JobPosition[]>([]);
   const [loading, setLoading] = useState(true);
-  const [applied, setApplied] = useState(false);
 
-  /*   const [isPending, setIsPending] = useState(true);
-  const [error, setError] = useState(null);
- */
   useEffect(() => {
     agent.JobPositions.list().then((response) => {
       console.log(response);
@@ -27,9 +23,7 @@ export default observer(function JobPositionsList() {
   const handleApply = async (jobId: number) => {
     try {
       const userId = await userStore.getCurrentUserId();
-      const a = await userStore.apply({ jobPositionId: jobId, applicantId: userId });
-      console.log(a);
-      setApplied(a);
+      await userStore.apply({ jobPositionId: jobId, applicantId: userId });
     } catch (error) {
       console.log(error);
     }
@@ -42,15 +36,7 @@ export default observer(function JobPositionsList() {
     <Container sx={{ mt: 5 }}>
       <Grid container spacing={12}>
         {jobPositions.map((item) => {
-          return (
-            <JobPositionCard
-              applied={applied}
-              setApplied={setApplied}
-              path={path}
-              jobPosition={item}
-              handleApply={handleApply}
-            />
-          );
+          return <JobPositionCard path={path} jobPosition={item} handleApply={handleApply} />;
         })}
       </Grid>
     </Container>

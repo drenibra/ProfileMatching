@@ -7,6 +7,8 @@ import ResponsiveAppBar from './ResponsiveAppBar';
 import { useStore } from '../stores/store';
 import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import MyApplications from './MyApplications';
+import Applications from './Applications';
 
 const routes = [
   { path: '/', element: LoginForm },
@@ -15,6 +17,8 @@ const routes = [
   { path: '/home', element: LandingPage },
   { path: '/login', element: LoginForm },
   { path: '/signup', element: RegisterForm },
+  { path: '/my-applications', element: MyApplications },
+  { path: '/applications', element: Applications },
 ];
 
 export default observer(function App() {

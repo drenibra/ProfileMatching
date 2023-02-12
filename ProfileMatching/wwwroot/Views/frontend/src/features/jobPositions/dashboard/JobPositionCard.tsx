@@ -1,17 +1,14 @@
-import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import axios from 'axios';
+import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 import { useState } from 'react';
 import { JobPosition } from '../../../app/models/JobPosition';
 
 interface Props {
   jobPosition: JobPosition;
   handleApply: (arg0: number) => void;
-  setApplied: (arg0: boolean) => void;
-  applied: boolean;
   path: string;
 }
 
-export default function JobPositionCard({ jobPosition, handleApply, setApplied, applied, path }: Props) {
+export default function JobPositionCard({ jobPosition, handleApply, path }: Props) {
   return (
     <Grid item xs={4}>
       <Card key={jobPosition.id}>
@@ -40,14 +37,11 @@ export default function JobPositionCard({ jobPosition, handleApply, setApplied, 
                 variant="contained"
                 onClick={() => {
                   handleApply(jobPosition.id);
-                  setApplied(true);
                 }}
-                disabled={applied}
               >
                 Apply
               </Button>
             </Box>
-            {applied && <Alert severity="success">Application sent!</Alert>}
           </CardContent>
         </CardActionArea>
       </Card>

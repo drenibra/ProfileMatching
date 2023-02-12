@@ -105,9 +105,13 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
         {
             return await _context.applications.ToListAsync();
         }
-        public async Task<Application> GetApplicationsByJobId(int id)
+        public async Task<List<Application>> GetApplicationsByJobId(int id)
         {
-            return await _context.applications.FirstOrDefaultAsync(application => application.JobPosition.Id == id);
+            return await _context.applications.Where(application => application.JobPosition.Id == id).Include(a => a.JobPosition).ThenInclude(JobPosition => JobPosition.Company).ToListAsync();
+        }
+        public async Task<List<Application>> GetApplicationsByApplicantId(string id)
+        {
+            return await _context.applications.Where(application => application.ApplicantId == id).Include(a => a.JobPosition).ThenInclude(JobPosition => JobPosition.Company).ToListAsync();
         }
     }
 }

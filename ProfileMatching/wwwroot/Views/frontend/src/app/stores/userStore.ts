@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable, observable, runInAction } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 import agent from '../api/agent';
 import { ApplicationDto } from '../models/ApplicationDto';
@@ -6,6 +6,7 @@ import { User, UserFormValues, UserRegister } from '../models/User';
 import { store } from './store';
 
 export default class UserStore {
+  isApplicant: boolean = false;
   user: User | null = null;
   error: boolean = false;
 
@@ -83,6 +84,25 @@ export default class UserStore {
       return false;
     }
   };
+
+  getRoles = async (): Promise<Array<string>> => {
+    try {
+      const roles = agent.Account.roles();
+      return roles;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
+
+  async fetchIsApplicant() {
+    try {
+      const roles = await agent.Account.roles();
+      this.isApplicant = roles.includes('Applicant');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   /*   getRoles = async (): Promise<string[]> => {
     try {

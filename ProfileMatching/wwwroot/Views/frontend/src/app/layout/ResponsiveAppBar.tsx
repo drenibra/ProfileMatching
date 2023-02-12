@@ -13,8 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useStore } from '../stores/store';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './styles.css';
+import { useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 
 const pages = [
   {
@@ -32,7 +34,9 @@ const pages = [
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-function ResponsiveAppBar() {
+export default observer(function ResponsiveAppBar() {
+  const navigate = useNavigate();
+
   const { userStore } = useStore();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -163,6 +167,19 @@ function ResponsiveAppBar() {
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">Profile</Typography>
                 </MenuItem>
+                {userStore.isApplicant ? (
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center" onClick={() => navigate('/my-applications')}>
+                      My Applications
+                    </Typography>
+                  </MenuItem>
+                ) : (
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center" onClick={() => navigate('/applications')}>
+                      Applications
+                    </Typography>
+                  </MenuItem>
+                )}
                 <MenuItem
                   onClick={() => {
                     handleCloseUserMenu();
@@ -178,5 +195,4 @@ function ResponsiveAppBar() {
       </Container>
     </AppBar>
   );
-}
-export default ResponsiveAppBar;
+});

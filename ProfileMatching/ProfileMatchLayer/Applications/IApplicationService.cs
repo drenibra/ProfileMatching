@@ -9,8 +9,9 @@ namespace ProfileMatching.ProfileMatchLayer.Applications
 
         Task<List<Application>> GetApplications();
 
-        Task<Application> GetApplicationsByJobId(int id);
+        Task<List<Application>> GetApplicationsByJobId(int id);
 
+        Task<List<Application>> GetApplicationsByApplicantId(string id);
         Task<string> DeleteApplication(int id);
     }
 }
